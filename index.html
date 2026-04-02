@@ -893,6 +893,26 @@
       border: 1px solid var(--green-m)
     }
 
+    /* Red Badge (Atrasado) */
+    .badge-red {
+      background: var(--red-l);
+      color: var(--red);
+      border: 1px solid var(--red-m)
+    }
+    .badge-red::before {
+      background: var(--red)
+    }
+
+    /* Purple Badge (Pendente) */
+    .badge-purple {
+      background: var(--purple-l);
+      color: var(--purple);
+      border: 1px solid #ddd6fe
+    }
+    .badge-purple::before {
+      background: var(--purple)
+    }
+
     .tag-p0 {
       display: inline-block;
       padding: 2px 8px;
@@ -2022,13 +2042,13 @@
           const sn = normStatus(s);
           const isLate = sn !== 'concluido' && dataPrev && dataPrev < todayStr;
 
-          if (isLate) return `<span class="badge" style="background:var(--red-l);color:var(--red);border-color:var(--red-m)">Atrasado</span>`;
+          if (isLate) return `<span class="badge badge-red">Atrasado</span>`;
           if (sn === 'concluido') return `<span class="badge badge-c">Concluído</span>`;
           if (sn === 'em andamento') return `<span class="badge badge-a">Em Andamento</span>`;
-          if (sn === 'pendente') return `<span class="badge" style="background:var(--purple-l);color:var(--purple);border-color:var(--purple)">Pendente</span>`;
+          if (sn === 'pendente') return `<span class="badge badge-purple">Pendente</span>`;
           if (sn === 'congelado') return `<span class="badge badge-g">Congelado</span>`;
-          if (sn === 'atrasado') return `<span class="badge" style="background:var(--red-l);color:var(--red);border-color:var(--red-m)">Atrasado</span>`;
-          return `<span class="badge badge-gray">${s || ''}</span>`;
+          if (sn === 'atrasado') return `<span class="badge badge-red">Atrasado</span>`;
+          return `<span class="badge">${s || ''}</span>`;
         }
         function progColor(pct) {
           if (pct >= 0.8) return 'green';
