@@ -1413,10 +1413,10 @@
       border-radius: 12px;
       font-size: 14px;
       font-weight: 500;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       z-index: 9999;
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
       gap: 10px;
@@ -1503,17 +1503,17 @@
       <!-- DASHBOARD -->
       <div class="page active" id="page-dashboard">
 
-          <div class="hero">
-            <div class="hero-left">
-              <div class="hero-badge">Retenção Total Consolidada</div>
-              <div class="hero-val" id="hero-val">R$ 0,00</div>
-              <div class="hero-sub">Obras ativas &nbsp;•&nbsp; base 31/03/2026</div>
-            </div>
-            <div class="hero-right">
-              <div class="hero-pct" id="hero-pct">0%</div>
-              <div class="hero-pct-sub" id="hero-summary-label">0 de 0 ações concluídas</div>
-            </div>
+        <div class="hero">
+          <div class="hero-left">
+            <div class="hero-badge">Retenção Total Consolidada</div>
+            <div class="hero-val" id="hero-val">R$ 0,00</div>
+            <div class="hero-sub">Obras ativas &nbsp;•&nbsp; base 31/03/2026</div>
           </div>
+          <div class="hero-right">
+            <div class="hero-pct" id="hero-pct">0%</div>
+            <div class="hero-pct-sub" id="hero-summary-label">0 de 0 ações concluídas</div>
+          </div>
+        </div>
 
         <div class="kpi-grid">
           <div class="kpi kblue" onclick="filterByStatus('')">
@@ -1561,10 +1561,10 @@
           </div>
 
           <!-- RETENÇÃO DONUT -->
-            <div class="ch-card">
-              <div class="ch-title">Retenção por Prioridade</div>
-              <div class="ch-subtitle" id="ch-total-ret-label">Valor retido total: R$ 0,00</div>
-              <div class="donut-wrap">
+          <div class="ch-card">
+            <div class="ch-title">Retenção por Prioridade</div>
+            <div class="ch-subtitle" id="ch-total-ret-label">Valor retido total: R$ 0,00</div>
+            <div class="donut-wrap">
               <div class="donut-canvas-wrap" style="width:160px;height:160px">
                 <canvas id="chart-prio" width="160" height="160"></canvas>
                 <div class="donut-center">
@@ -1777,276 +1777,287 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <div class="form-label">Responsável</div><input class="form-input" id="f-responsavel" type="text" placeholder="Nome">
+            <div class="form-label">Responsável</div><input class="form-input" id="f-responsavel" type="text"
+              placeholder="Nome">
           </div>
           <div class="form-group">
-            <div class="form-label">E-mail Resp.</div><input class="form-input" id="f-email-responsavel" type="email" placeholder="email@exemplo.com">
+            <div class="form-label">E-mail Resp.</div><input class="form-input" id="f-email-responsavel" type="email" placeholder="globalsrv.com.br"
+              placeholder="@globalsrv.com.br
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <div class="form-label">Apoio</div><input class="form-input" id="f-apoio" type="text">
+        <div class=" form-row">
+            <div class="form-group">
+              <div class="form-label">Apoio</div><input class="form-input" id="f-apoio" type="text">
+            </div>
+            <div class="form-group">
+            </div>
           </div>
-          <div class="form-group">
+          <div class="form-row">
+            <div class="form-group">
+              <div class="form-label">Data Prevista</div><input class="form-input" id="f-data-prev" type="date">
+            </div>
+            <div class="form-group">
+              <div class="form-label">Data Real Encerramento</div><input class="form-input" id="f-data-real"
+                type="date">
+            </div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <div class="form-label">Data Prevista</div><input class="form-input" id="f-data-prev" type="date">
+          <div class="form-row" style="margin-top:10px">
+            <div class="form-group">
+              <div class="form-label">Observações Gerais</div><textarea class="form-textarea" id="f-observacoes"
+                placeholder="Digite aqui anotações importantes..."></textarea>
+            </div>
           </div>
-          <div class="form-group">
-            <div class="form-label">Data Real Encerramento</div><input class="form-input" id="f-data-real" type="date">
+          <div class="modal-actions">
+            <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+            <button class="btn btn-primary editor-only" style="display:none" id="save-btn" onclick="saveAction()">Salvar
+              alterações</button>
           </div>
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-          <button class="btn btn-primary editor-only" style="display:none" id="save-btn" onclick="saveAction()">Salvar
-            alterações</button>
-        </div>
-        <!-- TIMELINE SECTION -->
-        <div id="timeline-section"
-          style="margin-top:24px;border-top:1px solid var(--border2);padding-top:20px;display:none">
-          <div class="form-label" style="margin-bottom:12px">Histórico de Alterações</div>
-          <div id="timeline-list" style="display:flex;flex-direction:column;gap:10px"></div>
+          <!-- TIMELINE SECTION -->
+          <div id="timeline-section"
+            style="margin-top:24px;border-top:1px solid var(--border2);padding-top:20px;display:none">
+            <div class="form-label" style="margin-bottom:12px">Histórico de Alterações</div>
+            <div id="timeline-list" style="display:flex;flex-direction:column;gap:10px"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- SETUP SHEETS -->
-    <div id="setup-overlay"
-      style="position:fixed;inset:0;background:rgba(15,20,40,.5);backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center">
-      <div
-        style="background:var(--white);border:1px solid var(--border);border-radius:20px;padding:40px;width:560px;max-width:95vw;box-shadow:var(--shadow-md)">
-        <div style="font-size:20px;font-weight:700;margin-bottom:6px">Conectar ao Google Sheets</div>
-        <div style="font-size:13px;color:var(--text3);margin-bottom:24px">O dashboard vai ler os dados em tempo real da
-          sua planilha.</div>
+      <!-- SETUP SHEETS -->
+      <div id="setup-overlay"
+        style="position:fixed;inset:0;background:rgba(15,20,40,.5);backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center">
         <div
-          style="background:var(--blue-l);border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid var(--blue)">
+          style="background:var(--white);border:1px solid var(--border);border-radius:20px;padding:40px;width:560px;max-width:95vw;box-shadow:var(--shadow-md)">
+          <div style="font-size:20px;font-weight:700;margin-bottom:6px">Conectar ao Google Sheets</div>
+          <div style="font-size:13px;color:var(--text3);margin-bottom:24px">O dashboard vai ler os dados em tempo real
+            da
+            sua planilha.</div>
           <div
-            style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em">
-            Passo 1</div>
-          <div style="font-size:13px;color:var(--text2);line-height:1.7">Crie uma aba <code
-              style="background:var(--blue-m);padding:1px 6px;border-radius:4px;font-size:12px">Plano</code> com as
-            colunas: <span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text3)">#, Obra,
-              Gestor, Valor Retido, Prioridade, Tipo, Ação, Responsável, Apoio, Status, Data Prevista, Data Real</span>
+            style="background:var(--blue-l);border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid var(--blue)">
+            <div
+              style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em">
+              Passo 1</div>
+            <div style="font-size:13px;color:var(--text2);line-height:1.7">Crie uma aba <code
+                style="background:var(--blue-m);padding:1px 6px;border-radius:4px;font-size:12px">Plano</code> com as
+              colunas: <span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text3)">#, Obra,
+                Gestor, Valor Retido, Prioridade, Tipo, Ação, Responsável, Apoio, Status, Data Prevista, Data
+                Real</span>
+            </div>
           </div>
-        </div>
-        <div
-          style="background:var(--yellow-l);border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid var(--yellow)">
           <div
-            style="font-size:11px;font-weight:700;color:var(--yellow);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em">
-            Passo 2</div>
-          <div style="font-size:13px;color:var(--text2)"><strong>Arquivo → Publicar na web</strong> → aba Plano →
-            Publicar
+            style="background:var(--yellow-l);border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid var(--yellow)">
+            <div
+              style="font-size:11px;font-weight:700;color:var(--yellow);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em">
+              Passo 2</div>
+            <div style="font-size:13px;color:var(--text2)"><strong>Arquivo → Publicar na web</strong> → aba Plano →
+              Publicar
+            </div>
           </div>
-        </div>
-        <div
-          style="background:var(--green-l);border-radius:12px;padding:16px;margin-bottom:20px;border-left:4px solid var(--green)">
           <div
-            style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em">
-            Passo 3 — Cole o link</div>
-          <input id="sheets-url-input" class="form-input" type="text"
-            placeholder="https://docs.google.com/spreadsheets/d/...">
-          <div id="sheets-error" style="font-size:12px;color:var(--red);min-height:16px;margin-top:4px"></div>
-        </div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;align-items:center">
-          <div style="font-size:12px;color:var(--text3);margin-right:auto">Sem Sheets? Usa os dados locais.</div>
-          <button class="btn btn-ghost" onclick="hideSetup()">Usar dados locais</button>
-          <button id="btn-connect-sheets" class="btn btn-primary" onclick="connectSheets()">Conectar</button>
+            style="background:var(--green-l);border-radius:12px;padding:16px;margin-bottom:20px;border-left:4px solid var(--green)">
+            <div
+              style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em">
+              Passo 3 — Cole o link</div>
+            <input id="sheets-url-input" class="form-input" type="text"
+              placeholder="https://docs.google.com/spreadsheets/d/...">
+            <div id="sheets-error" style="font-size:12px;color:var(--red);min-height:16px;margin-top:4px"></div>
+          </div>
+          <div style="display:flex;gap:10px;justify-content:flex-end;align-items:center">
+            <div style="font-size:12px;color:var(--text3);margin-right:auto">Sem Sheets? Usa os dados locais.</div>
+            <button class="btn btn-ghost" onclick="hideSetup()">Usar dados locais</button>
+            <button id="btn-connect-sheets" class="btn btn-primary" onclick="connectSheets()">Conectar</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <script>
-      // ---- SUPABASE CONFIG ----
-      const SB_URL = "https://mhrnrhtdgdpdspmoayem.supabase.co".trim();
-      const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocm5yaHRkZ2RwZHNwbW9heWVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNDMxMTMsImV4cCI6MjA5MDYxOTExM30.tGwVG81PZZdSgyZeLPI1q3Kcrm39pLV7REPgzkqIHYQ".trim();
-      const _supabase = supabase.createClient(SB_URL, SB_KEY);
+      <script>
+        // ---- SUPABASE CONFIG ----
+        const SB_URL = "https://mhrnrhtdgdpdspmoayem.supabase.co".trim();
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocm5yaHRkZ2RwZHNwbW9heWVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNDMxMTMsImV4cCI6MjA5MDYxOTExM30.tGwVG81PZZdSgyZeLPI1q3Kcrm39pLV7REPgzkqIHYQ".trim();
+        const _supabase = supabase.createClient(SB_URL, SB_KEY);
 
-      const WHITELIST = [
-        'denise.maliniak@globalsrv.com.br',
-        'caroline.gomes@globalsrv.com.br',
-        'marcelo.pereira@globalsrv.com.br'
-      ];
+        const WHITELIST = [
+          'denise.maliniak@globalsrv.com.br',
+          'caroline.gomes@globalsrv.com.br',
+          'marcelo.pereira@globalsrv.com.br'
+        ];
 
-      let actions = [];
-      let isEditor = false;
-      let userEmail = null;
-      let currentObra = null;
-      let editingIdx = null;
-      let planoPage = 0;
-      const PER_PAGE = 20;
+        let actions = [];
+        let isEditor = false;
+        let userEmail = null;
+        let currentObra = null;
+        let editingIdx = null;
+        let planoPage = 0;
+        const PER_PAGE = 20;
 
-      // ---- AUTH LOGIC ----
-      async function signInWithMicrosoft() {
-        const { data, error } = await _supabase.auth.signInWithOAuth({
-          provider: 'azure',
-          options: {
-            scopes: 'email profile',
-            redirectTo: window.location.origin + window.location.pathname
+        // ---- AUTH LOGIC ----
+        async function signInWithMicrosoft() {
+          const { data, error } = await _supabase.auth.signInWithOAuth({
+            provider: 'azure',
+            options: {
+              scopes: 'email profile',
+              redirectTo: window.location.origin + window.location.pathname
+            }
+          });
+          if (error) {
+            // Fallback to 'microsoft' provider if 'azure' fails (sometimes configured differently)
+            await _supabase.auth.signInWithOAuth({
+              provider: 'microsoft',
+              options: { scopes: 'email profile' }
+            });
           }
-        });
-        if (error) {
-          // Fallback to 'microsoft' provider if 'azure' fails (sometimes configured differently)
-          await _supabase.auth.signInWithOAuth({
-            provider: 'microsoft',
-            options: { scopes: 'email profile' }
+        }
+
+        async function signOut() {
+          await _supabase.auth.signOut();
+          window.location.reload();
+        }
+
+        async function checkUserSession() {
+          try {
+            const { data: { session } } = await _supabase.auth.getSession();
+
+            const loginScreen = document.getElementById('login-screen');
+            const appContainer = document.getElementById('app-container');
+
+            if (session && session.user) {
+              const user = session.user;
+              userEmail = user.email;
+
+              // Get metadata from Microsoft
+              const fullName = user.user_metadata?.full_name || user.email;
+              const avatarUrl = user.user_metadata?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=random`;
+
+              // Update UI
+              document.getElementById('user-name').textContent = fullName;
+              document.getElementById('user-avatar').src = avatarUrl;
+              document.getElementById('user-avatar').alt = fullName;
+              document.getElementById('user-profile-data').style.display = 'flex';
+
+              // Hide login, show app
+              loginScreen.style.display = 'none';
+              appContainer.style.display = 'block';
+
+              // Check role in Supabase
+              const { data: prof, error: profErr } = await _supabase
+                .from('profissionais')
+                .select('funcao')
+                .ilike('email', userEmail.trim())
+                .maybeSingle();
+
+              if (!profErr && prof) {
+                isEditor = (prof.funcao || '').toLowerCase().trim() === 'editor';
+                console.log("Perfil carregado:", prof.funcao, "isEditor:", isEditor);
+              } else {
+                isEditor = false;
+                if (profErr) console.warn("Erro ao buscar profissional:", profErr);
+              }
+
+              document.getElementById('user-role').textContent = isEditor ? 'Editor' : 'Visualizador';
+              updateEditorVisibility();
+
+              // Initial data fetch
+              fetchFromSupabase();
+            } else {
+              // No session
+              loginScreen.style.display = 'flex';
+              appContainer.style.display = 'none';
+              isEditor = false;
+              updateEditorVisibility();
+            }
+          } catch (err) {
+            console.error("Erro na sessão:", err);
+          }
+        }
+
+        function updateEditorVisibility() {
+          const display = isEditor ? '' : 'none';
+          document.querySelectorAll('.editor-only').forEach(el => {
+            el.style.display = display;
           });
         }
-      }
 
-      async function signOut() {
-        await _supabase.auth.signOut();
-        window.location.reload();
-      }
-
-      async function checkUserSession() {
-        try {
-          const { data: { session } } = await _supabase.auth.getSession();
-
-          const loginScreen = document.getElementById('login-screen');
-          const appContainer = document.getElementById('app-container');
-
-          if (session && session.user) {
-            const user = session.user;
-            userEmail = user.email;
-
-            // Get metadata from Microsoft
-            const fullName = user.user_metadata?.full_name || user.email;
-            const avatarUrl = user.user_metadata?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=random`;
-
-            // Update UI
-            document.getElementById('user-name').textContent = fullName;
-            document.getElementById('user-avatar').src = avatarUrl;
-            document.getElementById('user-avatar').alt = fullName;
-            document.getElementById('user-profile-data').style.display = 'flex';
-
-            // Hide login, show app
-            loginScreen.style.display = 'none';
-            appContainer.style.display = 'block';
-
-            // Check role in Supabase
-            const { data: prof, error: profErr } = await _supabase
-              .from('profissionais')
-              .select('funcao')
-              .ilike('email', userEmail.trim())
-              .maybeSingle();
-
-            if (!profErr && prof) {
-              isEditor = (prof.funcao || '').toLowerCase().trim() === 'editor';
-              console.log("Perfil carregado:", prof.funcao, "isEditor:", isEditor);
-            } else {
-              isEditor = false; 
-              if (profErr) console.warn("Erro ao buscar profissional:", profErr);
-            }
-
-            document.getElementById('user-role').textContent = isEditor ? 'Editor' : 'Visualizador';
-            updateEditorVisibility();
-
-            // Initial data fetch
-            fetchFromSupabase();
-          } else {
-            // No session
-            loginScreen.style.display = 'flex';
-            appContainer.style.display = 'none';
-            isEditor = false;
-            updateEditorVisibility();
-          }
-        } catch (err) {
-          console.error("Erro na sessão:", err);
+        // ---- UTILS ----
+        function normStatus(s) {
+          return (s || '').toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         }
-      }
+        function fmtMoney(v) {
+          return 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        function fmtDate(d) {
+          if (!d) return '—';
+          const [y, m, dd] = d.split('-');
+          return `${dd}/${m}/${y}`;
+        }
+        function statusBadge(s, dataPrev) {
+          const todayStr = new Date().toLocaleDateString('en-CA');
+          const sn = normStatus(s);
+          const isLate = sn !== 'concluido' && dataPrev && dataPrev < todayStr;
 
-      function updateEditorVisibility() {
-        const display = isEditor ? '' : 'none';
-        document.querySelectorAll('.editor-only').forEach(el => {
-          el.style.display = display;
-        });
-      }
+          if (isLate) return `<span class="badge" style="background:var(--red-l);color:var(--red);border-color:var(--red-m)">Atrasado</span>`;
+          if (sn === 'concluido') return `<span class="badge badge-c">Concluído</span>`;
+          if (sn === 'em andamento') return `<span class="badge badge-a">Em Andamento</span>`;
+          if (sn === 'pendente') return `<span class="badge" style="background:var(--purple-l);color:var(--purple);border-color:var(--purple)">Pendente</span>`;
+          if (sn === 'congelado') return `<span class="badge badge-g">Congelado</span>`;
+          return `<span class="badge badge-gray">${s || ''}</span>`;
+        }
+        function progColor(pct) {
+          if (pct >= 0.8) return 'green';
+          if (pct >= 0.3) return 'yellow';
+          return 'red';
+        }
+        function situacaoBadge(s) {
+          if (!s) return '';
+          const sl = s.toLowerCase();
+          if (sl.includes('crítico')) return `<span class="badge badge-crit">Crítico</span>`;
+          if (sl.includes('progresso')) return `<span class="badge badge-prog">Em Progresso</span>`;
+          if (sl.includes('concluído')) return `<span class="badge badge-c">Concluído</span>`;
+          return `<span class="badge">${s}</span>`;
+        }
+        function getObrasStats() {
+          const obras = {};
+          actions.forEach(a => {
+            if (!obras[a.obra]) obras[a.obra] = { obra: a.obra, gestor: a.gestor, prioridade: a.prioridade, retencao: a.valor_retido, conc: 0, and: 0, pend: 0, cong: 0, ag: 0, total: 0 };
+            const o = obras[a.obra];
+            const sn = normStatus(a.status);
+            if (sn === 'concluido') o.conc++;
+            else if (sn === 'em andamento') o.and++;
+            else if (sn === 'congelado') o.cong++;
+            else if (sn === 'aguardando') o.ag++;
+            else o.pend++;
+            o.total++;
+          });
+          return Object.values(obras);
+        }
 
-      // ---- UTILS ----
-      function normStatus(s) {
-        return (s || '').toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      }
-      function fmtMoney(v) {
-        return 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      }
-      function fmtDate(d) {
-        if (!d) return '—';
-        const [y, m, dd] = d.split('-');
-        return `${dd}/${m}/${y}`;
-      }
-      function statusBadge(s, dataPrev) {
-        const todayStr = new Date().toLocaleDateString('en-CA');
-        const sn = normStatus(s);
-        const isLate = sn !== 'concluido' && dataPrev && dataPrev < todayStr;
-        
-        if (isLate) return `<span class="badge" style="background:var(--red-l);color:var(--red);border-color:var(--red-m)">Atrasado</span>`;
-        if (sn === 'concluido') return `<span class="badge badge-c">Concluído</span>`;
-        if (sn === 'em andamento') return `<span class="badge badge-a">Em Andamento</span>`;
-        if (sn === 'pendente') return `<span class="badge" style="background:var(--purple-l);color:var(--purple);border-color:var(--purple)">Pendente</span>`;
-        if (sn === 'congelado') return `<span class="badge badge-g">Congelado</span>`;
-        return `<span class="badge badge-gray">${s || ''}</span>`;
-      }
-      function progColor(pct) {
-        if (pct >= 0.8) return 'green';
-        if (pct >= 0.3) return 'yellow';
-        return 'red';
-      }
-      function situacaoBadge(s) {
-        if (!s) return '';
-        const sl = s.toLowerCase();
-        if (sl.includes('crítico')) return `<span class="badge badge-crit">Crítico</span>`;
-        if (sl.includes('progresso')) return `<span class="badge badge-prog">Em Progresso</span>`;
-        if (sl.includes('concluído')) return `<span class="badge badge-c">Concluído</span>`;
-        return `<span class="badge">${s}</span>`;
-      }
-      function getObrasStats() {
-        const obras = {};
-        actions.forEach(a => {
-          if (!obras[a.obra]) obras[a.obra] = { obra: a.obra, gestor: a.gestor, prioridade: a.prioridade, retencao: a.valor_retido, conc: 0, and: 0, pend: 0, cong: 0, ag: 0, total: 0 };
-          const o = obras[a.obra];
-          const sn = normStatus(a.status);
-          if (sn === 'concluido') o.conc++;
-          else if (sn === 'em andamento') o.and++;
-          else if (sn === 'congelado') o.cong++;
-          else if (sn === 'aguardando') o.ag++;
-          else o.pend++;
-          o.total++;
-        });
-        return Object.values(obras);
-      }
+        // ---- PAGES ----
+        function goPage(p) {
+          document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+          document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+          document.getElementById('page-' + p).classList.add('active');
+          const btn = document.querySelector(`.nav-item[onclick="goPage('${p}')"]`);
+          if (btn) btn.classList.add('active');
+          if (p === 'dashboard') { renderDash(); setTimeout(renderCharts, 50); }
+          if (p === 'plano') renderPlano();
+          if (p === 'financeiro') renderFin();
+        }
+        function goObra(obra) {
+          currentObra = obra;
+          document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+          document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+          document.getElementById('page-obra').classList.add('active');
+          renderObra(obra);
+        }
 
-      // ---- PAGES ----
-      function goPage(p) {
-        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        document.getElementById('page-' + p).classList.add('active');
-        const btn = document.querySelector(`.nav-item[onclick="goPage('${p}')"]`);
-        if (btn) btn.classList.add('active');
-        if (p === 'dashboard') { renderDash(); setTimeout(renderCharts, 50); }
-        if (p === 'plano') renderPlano();
-        if (p === 'financeiro') renderFin();
-      }
-      function goObra(obra) {
-        currentObra = obra;
-        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        document.getElementById('page-obra').classList.add('active');
-        renderObra(obra);
-      }
-
-      // ---- RENDER DASH ----
-      function renderDash() {
-        const obras = getObrasStats();
-        const tbody = document.getElementById('dash-tbody');
-        tbody.innerHTML = obras.map(o => {
-          const pct = o.total ? o.conc / o.total : 0;
-          const color = progColor(pct);
-          const sit = pct >= 0.8 ? '✅ Concluído' : pct >= 0.3 ? '⚠️ Em Progresso' : '🔴 Crítico';
-          const pb = `<div style="display:flex;align-items:center;gap:8px"><div class="prog-wrap" style="width:80px"><div class="prog-fill ${color}" style="width:${Math.round(pct * 100)}%"></div></div><span class="prog-label">${Math.round(pct * 100)}%</span></div>`;
-          const pri = o.prioridade === 'PRIORIDADE 0' ? `<span class="badge-p0">P0</span>` : `<span class="badge-p1">P1</span>`;
-          return `<tr>
+        // ---- RENDER DASH ----
+        function renderDash() {
+          const obras = getObrasStats();
+          const tbody = document.getElementById('dash-tbody');
+          tbody.innerHTML = obras.map(o => {
+            const pct = o.total ? o.conc / o.total : 0;
+            const color = progColor(pct);
+            const sit = pct >= 0.8 ? '✅ Concluído' : pct >= 0.3 ? '⚠️ Em Progresso' : '🔴 Crítico';
+            const pb = `<div style="display:flex;align-items:center;gap:8px"><div class="prog-wrap" style="width:80px"><div class="prog-fill ${color}" style="width:${Math.round(pct * 100)}%"></div></div><span class="prog-label">${Math.round(pct * 100)}%</span></div>`;
+            const pri = o.prioridade === 'PRIORIDADE 0' ? `<span class="badge-p0">P0</span>` : `<span class="badge-p1">P1</span>`;
+            return `<tr>
       <td class="td-obra">${o.obra}</td>
       <td style="color:var(--text2)">${o.gestor}</td>
       <td>${pri}</td>
@@ -2060,64 +2071,64 @@
       <td>${situacaoBadge(sit)}</td>
       <td><button class="btn btn-ghost" style="padding:5px 12px;font-size:12px" onclick="goObra('${o.obra.replace(/'/g, "\\'")}')">Ver →</button></td>
     </tr>`;
-        }).join('');
-      }
-
-      // ---- RENDER PLANO ----
-      let planoFiltered = [];
-      function renderPlano() {
-        // populate selects once
-        const obras = [...new Set(actions.map(a => a.obra))];
-        const resps = [...new Set(actions.map(a => a.responsavel).filter(Boolean))].sort();
-        const fObra = document.getElementById('f-obra');
-        if (fObra.options.length <= 1) {
-          obras.forEach(o => { const op = document.createElement('option'); op.value = o; op.textContent = o; fObra.appendChild(op); });
+          }).join('');
         }
-        const fResp = document.getElementById('f-resp');
-        if (fResp.options.length <= 1) {
-          resps.forEach(r => { const op = document.createElement('option'); op.value = r; op.textContent = r; fResp.appendChild(op); });
-        }
-        filterPlano();
-      }
-      function filterPlano() {
-        const search = document.querySelector('#page-plano .search-inp').value.toLowerCase();
-        const obra = document.getElementById('f-obra').value;
-        const status = document.getElementById('f-status').value;
-        const resp = document.getElementById('f-resp').value;
-        const todayStr = new Date().toISOString().split('T')[0];
-        planoFiltered = actions.filter(a => {
-          if (obra && a.obra !== obra) return false;
-          
-          if (status) {
-            const sn = normStatus(a.status);
-            const tn = normStatus(status);
-            const isLate = (sn !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
 
-            if (tn === 'atrasado') {
-              if (!isLate) return false;
-            } else if (tn === 'pendente') {
-              if (sn !== 'pendente' || isLate) return false;
-            } else if (sn !== tn) {
-              return false;
-            }
+        // ---- RENDER PLANO ----
+        let planoFiltered = [];
+        function renderPlano() {
+          // populate selects once
+          const obras = [...new Set(actions.map(a => a.obra))];
+          const resps = [...new Set(actions.map(a => a.responsavel).filter(Boolean))].sort();
+          const fObra = document.getElementById('f-obra');
+          if (fObra.options.length <= 1) {
+            obras.forEach(o => { const op = document.createElement('option'); op.value = o; op.textContent = o; fObra.appendChild(op); });
           }
+          const fResp = document.getElementById('f-resp');
+          if (fResp.options.length <= 1) {
+            resps.forEach(r => { const op = document.createElement('option'); op.value = r; op.textContent = r; fResp.appendChild(op); });
+          }
+          filterPlano();
+        }
+        function filterPlano() {
+          const search = document.querySelector('#page-plano .search-inp').value.toLowerCase();
+          const obra = document.getElementById('f-obra').value;
+          const status = document.getElementById('f-status').value;
+          const resp = document.getElementById('f-resp').value;
+          const todayStr = new Date().toISOString().split('T')[0];
+          planoFiltered = actions.filter(a => {
+            if (obra && a.obra !== obra) return false;
 
-          if (resp && a.responsavel !== resp) return false;
-          if (search && !a.acao.toLowerCase().includes(search) && !(a.responsavel || '').toLowerCase().includes(search)) return false;
-          return true;
-        });
-        planoPage = 0;
-        renderPlanoPage();
-      }
-      function renderPlanoPage() {
-        const start = planoPage * PER_PAGE;
-        const slice = planoFiltered.slice(start, start + PER_PAGE);
-        const edCols = isEditor ? '<th>Ações</th>' : '';
-        const tbody = document.getElementById('plano-tbody');
-        tbody.innerHTML = slice.length ? slice.map(a => {
-          const idx = actions.indexOf(a);
-          const editBtn = isEditor ? `<td><button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="openEditModal(${idx})">Editar</button></td>` : '';
-          return `<tr>
+            if (status) {
+              const sn = normStatus(a.status);
+              const tn = normStatus(status);
+              const isLate = (sn !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
+
+              if (tn === 'atrasado') {
+                if (!isLate) return false;
+              } else if (tn === 'pendente') {
+                if (sn !== 'pendente' || isLate) return false;
+              } else if (sn !== tn) {
+                return false;
+              }
+            }
+
+            if (resp && a.responsavel !== resp) return false;
+            if (search && !a.acao.toLowerCase().includes(search) && !(a.responsavel || '').toLowerCase().includes(search)) return false;
+            return true;
+          });
+          planoPage = 0;
+          renderPlanoPage();
+        }
+        function renderPlanoPage() {
+          const start = planoPage * PER_PAGE;
+          const slice = planoFiltered.slice(start, start + PER_PAGE);
+          const edCols = isEditor ? '<th>Ações</th>' : '';
+          const tbody = document.getElementById('plano-tbody');
+          tbody.innerHTML = slice.length ? slice.map(a => {
+            const idx = actions.indexOf(a);
+            const editBtn = isEditor ? `<td><button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="openEditModal(${idx})">Editar</button></td>` : '';
+            return `<tr>
       <td class="td-mono">${a.num}</td>
       <td class="td-obra" style="max-width:130px">${a.obra}</td>
       <td><span class="tipo-badge">${a.tipo || ''}</span></td>
@@ -2129,34 +2140,34 @@
       <td class="td-mono">${fmtDate(a.data_real)}</td>
       ${editBtn}
     </tr>`;
-        }).join('') : '<tr><td colspan="10" class="empty">Nenhuma ação encontrada</td></tr>';
+          }).join('') : '<tr><td colspan="10" class="empty">Nenhuma ação encontrada</td></tr>';
 
-        // pagination
-        const total = planoFiltered.length;
-        const pages = Math.ceil(total / PER_PAGE);
-        const pag = document.getElementById('plano-pag');
-        let html = '';
-        for (let i = 0; i < pages; i++) {
-          html += `<button class="pag-btn ${i === planoPage ? 'active' : ''}" onclick="setPlanoPage(${i})">${i + 1}</button>`;
+          // pagination
+          const total = planoFiltered.length;
+          const pages = Math.ceil(total / PER_PAGE);
+          const pag = document.getElementById('plano-pag');
+          let html = '';
+          for (let i = 0; i < pages; i++) {
+            html += `<button class="pag-btn ${i === planoPage ? 'active' : ''}" onclick="setPlanoPage(${i})">${i + 1}</button>`;
+          }
+          html += `<span class="pag-info">${total} ações encontradas</span>`;
+          pag.innerHTML = html;
         }
-        html += `<span class="pag-info">${total} ações encontradas</span>`;
-        pag.innerHTML = html;
-      }
-      function setPlanoPage(p) { planoPage = p; renderPlanoPage(); }
+        function setPlanoPage(p) { planoPage = p; renderPlanoPage(); }
 
-      // ---- RENDER OBRA ----
-      function renderObra(obra) {
-        const oActions = actions.filter(a => a.obra === obra);
-        const conc = oActions.filter(a => a.status === 'Concluído').length;
-        const and = oActions.filter(a => a.status === 'Em Andamento').length;
-        const pend = oActions.filter(a => a.status === 'Pendente' || a.status === 'PENDENTE').length;
-        const cong = oActions.filter(a => (a.status || '').toUpperCase() === 'CONGELADO').length;
-        const pct = oActions.length ? conc / oActions.length : 0;
-        const retencao = oActions[0]?.valor_retido || 0;
-        const gestor = oActions[0]?.gestor || '—';
-        const pri = oActions[0]?.prioridade || '—';
+        // ---- RENDER OBRA ----
+        function renderObra(obra) {
+          const oActions = actions.filter(a => a.obra === obra);
+          const conc = oActions.filter(a => a.status === 'Concluído').length;
+          const and = oActions.filter(a => a.status === 'Em Andamento').length;
+          const pend = oActions.filter(a => a.status === 'Pendente' || a.status === 'PENDENTE').length;
+          const cong = oActions.filter(a => (a.status || '').toUpperCase() === 'CONGELADO').length;
+          const pct = oActions.length ? conc / oActions.length : 0;
+          const retencao = oActions[0]?.valor_retido || 0;
+          const gestor = oActions[0]?.gestor || '—';
+          const pri = oActions[0]?.prioridade || '—';
 
-        document.getElementById('obra-header-content').innerHTML = `
+          document.getElementById('obra-header-content').innerHTML = `
     <div class="page-header"><div class="page-title">${obra}</div></div>
     <div class="obra-header">
       <div class="obra-kpi"><div class="okpi-lbl">Gestor</div><div class="okpi-val">${gestor}</div></div>
@@ -2173,25 +2184,25 @@
         </div>
       </div>
     </div>`;
-        filterObra();
-      }
-      function filterObra() {
-        if (!currentObra) return;
-        const search = document.querySelector('#page-obra .search-inp').value.toLowerCase();
-        const status = document.getElementById('f-obra-status').value;
-        const filtered = actions.filter(a => {
-          if (a.obra !== currentObra) return false;
-          if (status && (a.status || '').toLowerCase() !== status.toLowerCase()) return false;
-          if (search && !a.acao.toLowerCase().includes(search)) return false;
-          return true;
-        });
-        const tbody = document.getElementById('obra-tbody');
-        tbody.innerHTML = filtered.length ? filtered.map(a => {
-          const idx = actions.indexOf(a);
-          const editBtns = isEditor ? `<td style="white-space:nowrap">
+          filterObra();
+        }
+        function filterObra() {
+          if (!currentObra) return;
+          const search = document.querySelector('#page-obra .search-inp').value.toLowerCase();
+          const status = document.getElementById('f-obra-status').value;
+          const filtered = actions.filter(a => {
+            if (a.obra !== currentObra) return false;
+            if (status && (a.status || '').toLowerCase() !== status.toLowerCase()) return false;
+            if (search && !a.acao.toLowerCase().includes(search)) return false;
+            return true;
+          });
+          const tbody = document.getElementById('obra-tbody');
+          tbody.innerHTML = filtered.length ? filtered.map(a => {
+            const idx = actions.indexOf(a);
+            const editBtns = isEditor ? `<td style="white-space:nowrap">
       <button class="btn btn-ghost" style="padding:4px 9px;font-size:11px" onclick="openEditModal(${idx})">Editar</button>
     </td>` : '';
-          return `<tr>
+            return `<tr>
       <td class="td-mono">${a.num}</td>
       <td><span class="tipo-badge">${a.tipo || ''}</span></td>
       <td class="td-acao">${a.acao}</td>
@@ -2203,21 +2214,21 @@
       <td style="font-size:12px;color:var(--text3)">—</td>
       ${editBtns}
     </tr>`;
-        }).join('') : '<tr><td colspan="10" class="empty">Nenhuma ação encontrada</td></tr>';
-      }
+          }).join('') : '<tr><td colspan="10" class="empty">Nenhuma ação encontrada</td></tr>';
+        }
 
-      // ---- RENDER FIN ----
-      function renderFin() {
-        const obras = getObrasStats();
-        let totalRet = 0;
-        const tbody = document.getElementById('fin-tbody');
-        tbody.innerHTML = obras.map(o => {
-          totalRet += o.retencao;
-          const pct = o.total ? o.conc / o.total : 0;
-          const sit = pct >= 0.8 ? '✅ Concluído' : pct >= 0.3 ? '⚠️ Em Progresso' : '🔴 Crítico';
-          const pri = o.prioridade === 'PRIORIDADE 0' ? `<span class="badge-p0">P0</span>` : `<span class="badge-p1">P1</span>`;
-          const pb = `<div style="display:flex;align-items:center;gap:8px"><div class="prog-wrap" style="width:60px"><div class="prog-fill ${progColor(pct)}" style="width:${Math.round(pct * 100)}%"></div></div><span class="td-mono">${Math.round(pct * 100)}%</span></div>`;
-          return `<tr>
+        // ---- RENDER FIN ----
+        function renderFin() {
+          const obras = getObrasStats();
+          let totalRet = 0;
+          const tbody = document.getElementById('fin-tbody');
+          tbody.innerHTML = obras.map(o => {
+            totalRet += o.retencao;
+            const pct = o.total ? o.conc / o.total : 0;
+            const sit = pct >= 0.8 ? '✅ Concluído' : pct >= 0.3 ? '⚠️ Em Progresso' : '🔴 Crítico';
+            const pri = o.prioridade === 'PRIORIDADE 0' ? `<span class="badge-p0">P0</span>` : `<span class="badge-p1">P1</span>`;
+            const pb = `<div style="display:flex;align-items:center;gap:8px"><div class="prog-wrap" style="width:60px"><div class="prog-fill ${progColor(pct)}" style="width:${Math.round(pct * 100)}%"></div></div><span class="td-mono">${Math.round(pct * 100)}%</span></div>`;
+            return `<tr>
       <td class="td-obra">${o.obra}</td>
       <td style="color:var(--text2)">${o.gestor}</td>
       <td>${pri}</td>
@@ -2226,371 +2237,396 @@
       <td>${pb}</td>
       <td>${situacaoBadge(sit)}</td>
     </tr>`;
-        }).join('');
-        tbody.innerHTML += `<tr class="fin-total">
+          }).join('');
+          tbody.innerHTML += `<tr class="fin-total">
     <td colspan="3">TOTAL GERAL</td>
     <td class="td-money" style="font-size:15px">${fmtMoney(totalRet)}</td>
     <td style="text-align:center;font-family:'DM Mono',monospace">${actions.length}</td>
     <td colspan="2"></td>
   </tr>`;
-      }
-
-      // ---- EDITOR MODE ----
-      function toggleMode() {
-        isEditor = !isEditor;
-        const pill = document.getElementById('mode-toggle');
-        const label = document.getElementById('mode-label');
-        pill.classList.toggle('editor', isEditor);
-        label.textContent = isEditor ? 'Modo Editor' : 'Modo Visualização';
-        document.querySelectorAll('.editor-only').forEach(el => {
-          el.style.display = isEditor ? '' : 'none';
-        });
-        // re-render current page
-        const active = document.querySelector('.page.active');
-        if (active?.id === 'page-plano') renderPlanoPage();
-        if (active?.id === 'page-obra') filterObra();
-      }
-
-      // ---- MODAL ----
-      function openEditModal(idx) {
-        editingIdx = idx;
-        const a = actions[idx];
-        document.getElementById('modal-title').textContent = `Editar Ação #${a.num}`;
-        document.getElementById('f-acao').value = a.acao || '';
-        document.getElementById('f-tipo').value = a.tipo || 'Documentação';
-        document.getElementById('f-modal-status').value = a.status || 'Pendente';
-        document.getElementById('f-responsavel').value = a.responsavel || '';
-        document.getElementById('f-email-responsavel').value = a.email_responsavel || '';
-        document.getElementById('f-apoio').value = a.apoio || '';
-        document.getElementById('f-data-prev').value = a.data_prevista || '';
-        document.getElementById('f-data-real').value = a.data_real || '';
-        document.getElementById('modal-overlay').classList.add('open');
-      }
-      function openAddModal(obra) {
-        editingIdx = null;
-        document.getElementById('modal-title').textContent = 'Nova Ação' + (obra ? ` — ${obra}` : '');
-        document.getElementById('f-acao').value = '';
-        document.getElementById('f-tipo').value = 'Documentação';
-        document.getElementById('f-modal-status').value = 'Pendente';
-        document.getElementById('f-responsavel').value = '';
-        document.getElementById('f-email-responsavel').value = '';
-        document.getElementById('f-apoio').value = '';
-        document.getElementById('f-data-prev').value = '';
-        document.getElementById('f-data-real').value = '';
-        document.getElementById('modal-overlay').classList.add('open');
-      }
-      function closeModal(e) {
-        if (!e || e.target === document.getElementById('modal-overlay')) {
-          document.getElementById('modal-overlay').classList.remove('open');
-        }
-      }
-      async function saveAction() {
-        if (!isEditor) return showToast("Permissão negada");
-
-        const saveBtn = document.getElementById('save-btn');
-        saveBtn.disabled = true;
-        saveBtn.textContent = "Sincronizando...";
-
-        const previousStatus = editingIdx !== null ? actions[editingIdx].status : null;
-        const currentStatus = document.getElementById('f-modal-status').value;
-
-        const currentData = {
-          num: editingIdx !== null ? Number(actions[editingIdx].num) : (actions.reduce((max, a) => Math.max(max, Number(a.num) || 0), 0) + 1),
-          obra: currentObra || (editingIdx !== null ? actions[editingIdx].obra : 'MOTIVA / PPA'),
-          tipo: document.getElementById('f-tipo').value,
-          status: currentStatus,
-          responsavel: document.getElementById('f-responsavel').value,
-          email_responsavel: document.getElementById('f-email-responsavel').value,
-          apoio: document.getElementById('f-apoio').value,
-          data_prevista: document.getElementById('f-data-prev').value || null,
-          data_real: document.getElementById('f-data-real').value || null,
-          acao: document.getElementById('f-acao').value
-        };
-
-        if (editingIdx === null) {
-          currentData.gestor = '';
-          currentData.valor_retido = 0;
-          currentData.prioridade = 'PRIORIDADE 1';
-        } else {
-          currentData.gestor = actions[editingIdx].gestor || '';
-          currentData.valor_retido = Number(actions[editingIdx].valor_retido) || 0;
-          currentData.prioridade = actions[editingIdx].prioridade || 'PRIORIDADE 1';
-          currentData.id = actions[editingIdx].id;
         }
 
-        console.log("Enviando para Supabase:", currentData);
+        // ---- EDITOR MODE ----
+        function toggleMode() {
+          isEditor = !isEditor;
+          const pill = document.getElementById('mode-toggle');
+          const label = document.getElementById('mode-label');
+          pill.classList.toggle('editor', isEditor);
+          label.textContent = isEditor ? 'Modo Editor' : 'Modo Visualização';
+          document.querySelectorAll('.editor-only').forEach(el => {
+            el.style.display = isEditor ? '' : 'none';
+          });
+          // re-render current page
+          const active = document.querySelector('.page.active');
+          if (active?.id === 'page-plano') renderPlanoPage();
+          if (active?.id === 'page-obra') filterObra();
+        }
 
-        // 1. Instant feedback (Optimistic Update)
-        closeModal();
-        showToast("Atualizando plataforma...");
+        // ---- MODAL ----
+        function openEditModal(idx) {
+          editingIdx = idx;
+          const a = actions[idx];
+          document.getElementById('modal-title').textContent = `Editar Ação #${a.num}`;
+          document.getElementById('f-acao').value = a.acao || '';
+          document.getElementById('f-tipo').value = a.tipo || 'Documentação';
+          document.getElementById('f-modal-status').value = a.status || 'Pendente';
+          document.getElementById('f-responsavel').value = a.responsavel || '';
+          document.getElementById('f-email-responsavel').value = a.email_responsavel || '';
+          document.getElementById('f-apoio').value = a.apoio || '';
+          document.getElementById('f-data-prev').value = a.data_prevista || '';
+          document.getElementById('f-data-real').value = a.data_real || '';
+          document.getElementById('f-observacoes').value = a.observacoes || '';
+          document.getElementById('modal-overlay').classList.add('open');
+        }
+        function openAddModal(obra) {
+          editingIdx = null;
+          document.getElementById('modal-title').textContent = 'Nova Ação' + (obra ? ` — ${obra}` : '');
+          document.getElementById('f-acao').value = '';
+          document.getElementById('f-tipo').value = 'Documentação';
+          document.getElementById('f-modal-status').value = 'Pendente';
+          document.getElementById('f-responsavel').value = '';
+          document.getElementById('f-email-responsavel').value = '';
+          document.getElementById('f-apoio').value = '';
+          document.getElementById('f-data-prev').value = '';
+          document.getElementById('f-data-real').value = '';
+          document.getElementById('f-observacoes').value = '';
+          document.getElementById('modal-overlay').classList.add('open');
+        }
+        function closeModal(e) {
+          if (!e || e.target === document.getElementById('modal-overlay')) {
+            document.getElementById('modal-overlay').classList.remove('open');
+          }
+        }
+        async function saveAction() {
+          if (!isEditor) return showToast("Permissão negada");
 
-        const { data, error } = await _supabase.from('acoes').upsert(currentData).select();
+          const saveBtn = document.getElementById('save-btn');
+          saveBtn.disabled = true;
+          saveBtn.textContent = "Sincronizando...";
 
-        if (error) {
-          console.error("Erro ao salvar:", error);
-          showToast("Erro ao conectar com Supabase: " + error.message);
+          const previousStatus = editingIdx !== null ? actions[editingIdx].status : null;
+          const currentStatus = document.getElementById('f-modal-status').value;
+
+          const currentData = {
+            num: editingIdx !== null ? Number(actions[editingIdx].num) : (actions.reduce((max, a) => Math.max(max, Number(a.num) || 0), 0) + 1),
+            obra: currentObra || (editingIdx !== null ? actions[editingIdx].obra : 'MOTIVA / PPA'),
+            tipo: document.getElementById('f-tipo').value,
+            status: currentStatus,
+            responsavel: document.getElementById('f-responsavel').value,
+            email_responsavel: document.getElementById('f-email-responsavel').value,
+            apoio: document.getElementById('f-apoio').value,
+            data_prevista: document.getElementById('f-data-prev').value || null,
+            data_real: document.getElementById('f-data-real').value || null,
+            acao: document.getElementById('f-acao').value,
+            observacoes: document.getElementById('f-observacoes').value
+          };
+
+          if (editingIdx === null) {
+            currentData.gestor = '';
+            currentData.valor_retido = 0;
+            currentData.prioridade = 'PRIORIDADE 1';
+          } else {
+            currentData.gestor = actions[editingIdx].gestor || '';
+            currentData.valor_retido = Number(actions[editingIdx].valor_retido) || 0;
+            currentData.prioridade = actions[editingIdx].prioridade || 'PRIORIDADE 1';
+            currentData.id = actions[editingIdx].id;
+          }
+
+          console.log("Enviando para Supabase:", currentData);
+
+          // 1. Instant feedback (Optimistic Update)
+          closeModal();
+          showToast("Atualizando plataforma...");
+
+          const { data, error } = await _supabase.from('acoes').upsert(currentData).select();
+
+          if (error) {
+            console.error("Erro ao salvar:", error);
+            showToast("Erro ao conectar com Supabase: " + error.message);
+            saveBtn.disabled = false;
+            saveBtn.textContent = "Salvar alterações";
+            return;
+          }
+
+          // 2. Log history if status or observations changed
+          const previousObs = editingIdx !== null ? (actions[editingIdx].observacoes || '') : '';
+          const currentObs = currentData.observacoes || '';
+
+          if (previousStatus !== currentStatus || previousObs !== currentObs) {
+            const changelog = [];
+            if (previousStatus !== currentStatus) changelog.push(`Status: ${previousStatus || 'Novo'} → ${currentStatus}`);
+            if (previousObs !== currentObs) changelog.push(`Obs atualizada`);
+
+            await _supabase.from('historico_acoes').insert({
+              num: currentData.num,
+              alterado_por: userEmail,
+              status_anterior: previousStatus || 'Nova Ação',
+              status_novo: currentStatus,
+              acao_desc: changelog.join(' | '),
+              observacao: currentObs
+            });
+          }
+
+          showToast("Alterações feitas com sucesso ✅");
+          await fetchFromSupabase();
+
+          // Reset button state
           saveBtn.disabled = false;
           saveBtn.textContent = "Salvar alterações";
-          return;
         }
 
-        // 2. Log history only if status changed
-        if (previousStatus !== currentStatus) {
-          await _supabase.from('historico_acoes').insert({
-            num: currentData.num,
-            alterado_por: userEmail,
-            status_anterior: previousStatus || 'Nova Ação',
-            status_novo: currentStatus,
-            acao_desc: "Alteração de status"
-          });
-        }
+        async function fetchFromSupabase() {
+          const statusEl = document.getElementById('sheets-status');
+          if (statusEl) statusEl.textContent = '⌛ Sincronizando...';
 
-        showToast("Alterações feitas com sucesso ✅");
-        await fetchFromSupabase();
+          const { data, error } = await _supabase
+            .from('acoes')
+            .select('*')
+            .order('num', { ascending: true });
 
-        // Reset button state
-        saveBtn.disabled = false;
-        saveBtn.textContent = "Salvar alterações";
-      }
-
-      async function fetchFromSupabase() {
-        const statusEl = document.getElementById('sheets-status');
-        if (statusEl) statusEl.textContent = '⌛ Sincronizando...';
-
-        const { data, error } = await _supabase
-          .from('acoes')
-          .select('*')
-          .order('num', { ascending: true });
-
-        if (error) {
-          console.error("Erro no fetch:", error);
-          if (statusEl) statusEl.textContent = '❌ Erro na conexão';
-          return;
-        }
-
-        actions = data;
-        if (statusEl) statusEl.textContent = '✅ Supabase On';
-
-        const active = document.querySelector('.page.active');
-        if (active?.id === 'dashboard' || active?.id === 'page-dashboard') { renderDash(); renderCharts(); }
-        else if (active?.id === 'plano' || active?.id === 'page-plano') renderPlano();
-        else if (active?.id === 'financeiro' || active?.id === 'page-financeiro') renderFin();
-        else if (active?.id === 'obra' || active?.id === 'page-obra') renderObra(currentObra);
-      }
-
-      async function renderTimeline(num) {
-        const timelineWrap = document.getElementById('timeline-section');
-        const timelineList = document.getElementById('timeline-list');
-        timelineWrap.style.display = 'block';
-        timelineList.innerHTML = '<div style="font-size:12px;color:var(--text3)">Carregando histórico...</div>';
-
-        const { data, error } = await _supabase
-          .from('historico_acoes')
-          .select('*')
-          .eq('num', num)
-          .order('data_alteracao', { ascending: false });
-
-        if (error || !data.length) {
-          timelineList.innerHTML = '<div style="font-size:12px;color:var(--text3)">Nenhum histórico encontrado.</div>';
-          return;
-        }
-
-        timelineList.innerHTML = data.map(h => {
-          const dt = new Date(h.data_alteracao).toLocaleString('pt-BR');
-          return `
-      <div style="background:var(--bg);padding:10px;border-radius:8px;border:1px solid var(--border)">
-        <div style="font-size:11px;font-weight:600;color:var(--blue)">${dt} — ${h.alterado_por || 'Sistema'}</div>
-        <div style="font-size:12px;margin-top:4px">Alterou de <b>${h.status_anterior || '—'}</b> para <b>${h.status_novo}</b></div>
-      </div>`;
-        }).join('');
-      }
-
-      // ---- MODAL ----
-      async function openEditModal(idx) {
-        editingIdx = idx;
-        const a = actions[idx];
-        document.getElementById('modal-title').textContent = `Editar Ação #${a.num}`;
-        document.getElementById('f-acao').value = a.acao || '';
-        document.getElementById('f-tipo').value = a.tipo || 'Documentação';
-        document.getElementById('f-modal-status').value = a.status || 'Pendente';
-        document.getElementById('f-responsavel').value = a.responsavel || '';
-        document.getElementById('f-apoio').value = a.apoio || '';
-        document.getElementById('f-data-prev').value = a.data_prevista || '';
-        document.getElementById('f-data-real').value = a.data_real || '';
-
-        if (isEditor) {
-          const saveBtn = document.getElementById('save-btn');
-          saveBtn.style.display = 'block';
-          saveBtn.disabled = false;
-          saveBtn.textContent = 'Salvar alterações';
-        }
-
-        document.getElementById('modal-overlay').classList.add('open');
-        await renderTimeline(a.num);
-      }
-
-      function openAddModal(obra) {
-        editingIdx = null;
-        document.getElementById('modal-title').textContent = 'Nova Ação' + (obra ? ` — ${obra}` : '');
-        document.getElementById('f-acao').value = '';
-        document.getElementById('f-tipo').value = 'Documentação';
-        document.getElementById('f-modal-status').value = 'Pendente';
-        document.getElementById('f-responsavel').value = '';
-        document.getElementById('f-apoio').value = '';
-        document.getElementById('f-data-prev').value = '';
-        document.getElementById('f-data-real').value = '';
-        document.getElementById('timeline-section').style.display = 'none';
-
-        if (isEditor) {
-          const saveBtn = document.getElementById('save-btn');
-          saveBtn.style.display = 'block';
-          saveBtn.disabled = false;
-          saveBtn.textContent = 'Salvar alterações';
-        }
-
-        document.getElementById('modal-overlay').classList.add('open');
-      }
-
-      // Initial fetch & auth check
-      window.addEventListener('DOMContentLoaded', async () => {
-        await fetchFromSupabase();
-        await checkUserSession();
-      });
-
-      function showToast(msg) {
-        const t = document.getElementById('toast');
-        if (!t) {
-          console.log("Toast:", msg);
-          return;
-        }
-        t.textContent = msg || 'Alteração salva com sucesso';
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2500);
-      }
-
-      function filterByStatus(statusName) {
-        goPage('plano');
-        const select = document.getElementById('f-status');
-        if (select) {
-          select.value = statusName;
-          filterPlano();
-        }
-      }
-
-      // ---- CHARTS ----
-      let chartDonut, chartPrio, chartObras, chartRet;
-
-      function renderCharts() {
-        const obras = getObrasStats();
-
-        const todayStr = new Date().toLocaleDateString('en-CA');
-
-        // Helper to normalize status checks
-        const getStatusCount = (target) => {
-          return actions.filter(a => {
-            const sn = normStatus(a.status);
-            const tn = normStatus(target);
-            const isLate = (sn !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
-            
-            if (tn === 'atrasado') return isLate;
-            if (tn === 'concluido') return sn === 'concluido';
-            if (tn === 'pendente') return sn === 'pendente' && !isLate;
-            
-            return sn === tn;
-          }).length;
-        };
-
-        const conc = getStatusCount('Concluído');
-        const and = getStatusCount('Em Andamento');
-        const pend = getStatusCount('Pendente');
-        const atras = getStatusCount('Atrasado');
-        const cong = getStatusCount('Congelado');
-        const total = actions.length;
-
-        // ---- CÁLCULOS GLOBAIS ----
-        const totalRetencaoGlobal = obras.reduce((s, o) => s + (o.retencao || 0), 0);
-        const pctGlobal = total > 0 ? Math.round((conc / total) * 100) : 0;
-
-        // Atualização Dinâmica do Hero
-        document.getElementById('hero-val').textContent = fmtMoney(totalRetencaoGlobal);
-        document.getElementById('hero-pct').textContent = pctGlobal + '%';
-        document.getElementById('hero-summary-label').textContent = `${conc} de ${total} ações concluídas`;
-        
-        // Atualização Dinâmica dos Cards KPI
-        document.getElementById('kpi-total').textContent = total;
-        document.getElementById('kpi-conc').textContent = conc;
-        document.getElementById('kpi-and').textContent = and;
-        document.getElementById('kpi-pend').textContent = pend;
-        document.getElementById('kpi-atras').textContent = atras;
-
-        const getPctStr = (v) => total > 0 ? Math.round((v / total) * 100) + '%' : '0%';
-        document.getElementById('kpi-conc-pct').textContent = getPctStr(conc);
-        document.getElementById('kpi-and-pct').textContent = getPctStr(and);
-        document.getElementById('kpi-pend-pct').textContent = getPctStr(pend);
-        document.getElementById('kpi-atras-pct').textContent = getPctStr(atras);
-        
-        const labelRet = document.getElementById('ch-total-ret-label');
-        if (labelRet) labelRet.textContent = `Valor retido total: ${fmtMoney(totalRetencaoGlobal)}`;
-
-        // ---- DONUT STATUS (Chart.js) ----
-        if (chartDonut) chartDonut.destroy();
-        chartDonut = new Chart(document.getElementById('chart-donut'), {
-          type: 'doughnut',
-          data: {
-            labels: ['Concluído', 'Em Andamento', 'Pendente', 'Atrasado', 'Congelado'],
-            datasets: [{
-              data: [conc, and, pend, atras, cong],
-              backgroundColor: ['#16a34a', '#d97706', '#7c3aed', '#dc2626', '#1d4ed8'],
-              borderColor: '#ffffff', borderWidth: 3, hoverOffset: 8
-            }]
-          },
-          options: {
-            cutout: '72%', animation: { duration: 800, easing: 'easeOutQuart' },
-            plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} ações (${Math.round(ctx.raw / total * 100)}%)` } } }
+          if (error) {
+            console.error("Erro no fetch:", error);
+            if (statusEl) statusEl.textContent = '❌ Supabase Off';
+            return;
           }
-        });
-        document.getElementById('donut-total').textContent = total;
 
-        // Custom legend for donut
-        const dColors = ['#16a34a', '#d97706', '#7c3aed', '#dc2626', '#1d4ed8'];
-        const dLabels = ['Concluído', 'Em Andamento', 'Pendente', 'Atrasado', 'Congelado'];
-        const dVals = [conc, and, pend, atras, cong];
-        document.getElementById('donut-legend').innerHTML = dLabels.map((l, i) => {
-          if (dVals[i] === 0 && l === 'Congelado') return ''; // hide if zero and less important
-          return `
+          actions = data;
+          if (statusEl) statusEl.textContent = '✅ Supabase On';
+
+          const active = document.querySelector('.page.active');
+          if (active?.id === 'dashboard' || active?.id === 'page-dashboard') { renderDash(); renderCharts(); }
+          else if (active?.id === 'plano' || active?.id === 'page-plano') renderPlano();
+          else if (active?.id === 'financeiro' || active?.id === 'page-financeiro') renderFin();
+          else if (active?.id === 'obra' || active?.id === 'page-obra') renderObra(currentObra);
+        }
+
+        async function renderTimeline(num) {
+          const timelineWrap = document.getElementById('timeline-section');
+          const timelineList = document.getElementById('timeline-list');
+          timelineWrap.style.display = 'block';
+          timelineList.innerHTML = '<div style="font-size:12px;color:var(--text3)">Carregando histórico...</div>';
+
+          const { data, error } = await _supabase
+            .from('historico_acoes')
+            .select('*')
+            .eq('num', num)
+            .order('data_alteracao', { ascending: false });
+
+          if (error || !data.length) {
+            timelineList.innerHTML = '<div style="font-size:12px;color:var(--text3)">Nenhum histórico encontrado.</div>';
+            return;
+          }
+
+          timelineList.innerHTML = data.map(h => {
+            const obsHtml = h.observacao ? `<div style="font-size:11px;color:var(--text2);margin-top:4px;font-style:italic">"${h.observacao}"</div>` : '';
+            return `
+          <div style="background:var(--bg);padding:10px;border-radius:8px;border:1px solid var(--border)">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:4px">
+              <span>${h.alterado_por || 'Sistema'}</span>
+              <span>${new Date(h.data_alteracao).toLocaleString()}</span>
+            </div>
+            <div style="font-weight:600;font-size:12px">${h.acao_desc || 'Alteração realizada'}</div>
+            ${obsHtml}
+          </div>`;
+          }).join('');
+        }
+
+        // ---- MODAL ----
+        async function openEditModal(idx) {
+          editingIdx = idx;
+          const a = actions[idx];
+          document.getElementById('modal-title').textContent = `Editar Ação #${a.num}`;
+          document.getElementById('f-acao').value = a.acao || '';
+          document.getElementById('f-tipo').value = a.tipo || 'Documentação';
+          document.getElementById('f-modal-status').value = a.status || 'Pendente';
+          document.getElementById('f-responsavel').value = a.responsavel || '';
+          document.getElementById('f-apoio').value = a.apoio || '';
+          document.getElementById('f-data-prev').value = a.data_prevista || '';
+          document.getElementById('f-data-real').value = a.data_real || '';
+
+          if (isEditor) {
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.style.display = 'block';
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Salvar alterações';
+          }
+
+          document.getElementById('modal-overlay').classList.add('open');
+          await renderTimeline(a.num);
+        }
+
+        function openAddModal(obra) {
+          editingIdx = null;
+          document.getElementById('modal-title').textContent = 'Nova Ação' + (obra ? ` — ${obra}` : '');
+          document.getElementById('f-acao').value = '';
+          document.getElementById('f-tipo').value = 'Documentação';
+          document.getElementById('f-modal-status').value = 'Pendente';
+          document.getElementById('f-responsavel').value = '';
+          document.getElementById('f-apoio').value = '';
+          document.getElementById('f-data-prev').value = '';
+          document.getElementById('f-data-real').value = '';
+          document.getElementById('timeline-section').style.display = 'none';
+
+          if (isEditor) {
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.style.display = 'block';
+            saveBtn.disabled = false;
+            saveBtn.textContent = 'Salvar alterações';
+          }
+
+          document.getElementById('modal-overlay').classList.add('open');
+        }
+
+        // Initial fetch & auth check
+        window.addEventListener('DOMContentLoaded', async () => {
+          await fetchFromSupabase();
+          await checkUserSession();
+        });
+
+        function showToast(msg) {
+          const t = document.getElementById('toast');
+          if (!t) {
+            console.log("Toast:", msg);
+            return;
+          }
+          t.textContent = msg || 'Alteração salva com sucesso';
+          t.classList.add('show');
+          setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        function filterByStatus(statusName) {
+          goPage('plano');
+          const select = document.getElementById('f-status');
+          if (select) {
+            select.value = statusName;
+            filterPlano();
+          }
+        }
+
+        // ---- CHARTS ----
+        let chartDonut, chartPrio, chartObras, chartRet;
+
+        function renderCharts() {
+          const obras = getObrasStats();
+
+          const todayStr = new Date().toLocaleDateString('en-CA');
+
+          // Helper to normalize status checks
+          const getStatusCount = (target) => {
+            return actions.filter(a => {
+              const sn = normStatus(a.status);
+              const tn = normStatus(target);
+              const isLate = (sn !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
+
+              if (tn === 'atrasado') return isLate;
+              if (tn === 'concluido') return sn === 'concluido';
+              if (tn === 'pendente') return sn === 'pendente' && !isLate;
+
+              return sn === tn;
+            }).length;
+          };
+
+          const conc = getStatusCount('Concluído');
+          const and = getStatusCount('Em Andamento');
+          const pend = getStatusCount('Pendente');
+          const atras = getStatusCount('Atrasado');
+          const cong = getStatusCount('Congelado');
+          const total = actions.length;
+
+          // ---- CÁLCULOS GLOBAIS ----
+          const totalRetencaoGlobal = obras.reduce((s, o) => s + (o.retencao || 0), 0);
+          const pctGlobal = total > 0 ? Math.round((conc / total) * 100) : 0;
+
+          // Atualização Dinâmica do Hero
+          document.getElementById('hero-val').textContent = fmtMoney(totalRetencaoGlobal);
+          document.getElementById('hero-pct').textContent = pctGlobal + '%';
+          document.getElementById('hero-summary-label').textContent = `${conc} de ${total} ações concluídas`;
+
+          // Atualização Dinâmica dos Cards KPI
+          document.getElementById('kpi-total').textContent = total;
+          document.getElementById('kpi-conc').textContent = conc;
+          document.getElementById('kpi-and').textContent = and;
+          document.getElementById('kpi-pend').textContent = pend;
+          document.getElementById('kpi-atras').textContent = atras;
+
+          const getPctStr = (v) => total > 0 ? Math.round((v / total) * 100) + '%' : '0%';
+          document.getElementById('kpi-conc-pct').textContent = getPctStr(conc);
+          document.getElementById('kpi-and-pct').textContent = getPctStr(and);
+          document.getElementById('kpi-pend-pct').textContent = getPctStr(pend);
+          document.getElementById('kpi-atras-pct').textContent = getPctStr(atras);
+
+          const labelRet = document.getElementById('ch-total-ret-label');
+          if (labelRet) labelRet.textContent = `Valor retido total: ${fmtMoney(totalRetencaoGlobal)}`;
+
+          // ---- DONUT STATUS (Chart.js) ----
+          if (chartDonut) chartDonut.destroy();
+          chartDonut = new Chart(document.getElementById('chart-donut'), {
+            type: 'doughnut',
+            data: {
+              labels: ['Concluído', 'Em Andamento', 'Pendente', 'Atrasado', 'Congelado'],
+              datasets: [{
+                data: [conc, and, pend, atras, cong],
+                backgroundColor: ['#16a34a', '#d97706', '#7c3aed', '#dc2626', '#1d4ed8'],
+                borderColor: '#ffffff', borderWidth: 3, hoverOffset: 8
+              }]
+            },
+            options: {
+              cutout: '72%', animation: { duration: 800, easing: 'easeOutQuart' },
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: ctx => {
+                      const pct = total > 0 ? Math.round((ctx.raw / total) * 100) : 0;
+                      return ` ${ctx.label}: ${ctx.raw} ações (${pct}%)`;
+                    }
+                  }
+                }
+              }
+            }
+          });
+          document.getElementById('donut-total').textContent = total;
+
+          // Custom legend for donut
+          const dColors = ['#16a34a', '#d97706', '#7c3aed', '#dc2626', '#1d4ed8'];
+          const dLabels = ['Concluído', 'Em Andamento', 'Pendente', 'Atrasado', 'Congelado'];
+          const dVals = [conc, and, pend, atras, cong];
+          document.getElementById('donut-legend').innerHTML = dLabels.map((l, i) => {
+            if (dVals[i] === 0 && l === 'Congelado') return ''; // hide if zero and less important
+            return `
     <div class="dl-item">
       <div class="dl-dot" style="background:${dColors[i]}"></div>
       <div class="dl-label">${l}</div>
       <div class="dl-val">${dVals[i]}<span class="dl-pct">${total > 0 ? Math.round(dVals[i] / total * 100) : 0}%</span></div>
     </div>`;
-        }).join('');
+          }).join('');
 
-        // ---- DONUT PRIORIDADE (Chart.js) ----
-        const retP0 = obras.filter(o => o.prioridade === 'PRIORIDADE 0').reduce((s, o) => s + o.retencao, 0);
-        const retP1 = obras.filter(o => o.prioridade !== 'PRIORIDADE 0').reduce((s, o) => s + o.retencao, 0);
-        if (chartPrio) chartPrio.destroy();
-        chartPrio = new Chart(document.getElementById('chart-prio'), {
-          type: 'doughnut',
-          data: {
-            labels: ['Prioridade 0', 'Prioridade 1'],
-            datasets: [{
-              data: [retP0, retP1],
-              backgroundColor: ['#dc2626', '#1d4ed8'],
-              borderColor: '#ffffff', borderWidth: 3, hoverOffset: 8
-            }]
-          },
-          options: {
-            cutout: '72%', animation: { duration: 800, easing: 'easeOutQuart' },
-            plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: R$ ${ctx.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` } } }
-          }
-        });
+          // ---- DONUT PRIORIDADE (Chart.js) ----
+          const retP0 = obras.filter(o => o.prioridade === 'PRIORIDADE 0').reduce((s, o) => s + o.retencao, 0);
+          const retP1 = obras.filter(o => o.prioridade !== 'PRIORIDADE 0').reduce((s, o) => s + o.retencao, 0);
+          if (chartPrio) chartPrio.destroy();
+          chartPrio = new Chart(document.getElementById('chart-prio'), {
+            type: 'doughnut',
+            data: {
+              labels: ['Prioridade 0', 'Prioridade 1'],
+              datasets: [{
+                data: [retP0, retP1],
+                backgroundColor: ['#dc2626', '#1d4ed8'],
+                borderColor: '#ffffff', borderWidth: 3, hoverOffset: 8
+              }]
+            },
+            options: {
+              cutout: '72%', animation: { duration: 800, easing: 'easeOutQuart' },
+              plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: R$ ${ctx.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` } } }
+            }
+          });
 
-        const fmt = v => v >= 1000000 ? 'R$ ' + (v / 1000000).toFixed(1) + 'M' : 'R$ ' + (v / 1000).toFixed(0) + 'k';
-        const pTotal = retP0 + retP1;
-        document.getElementById('prio-legend').innerHTML = [
-          { l: 'Prioridade 0', c: '#dc2626', v: retP0 },
-          { l: 'Prioridade 1', c: '#1d4ed8', v: retP1 }
-        ].map(d => `
+          const fmt = v => v >= 1000000 ? 'R$ ' + (v / 1000000).toFixed(1) + 'M' : 'R$ ' + (v / 1000).toFixed(0) + 'k';
+          const pTotal = retP0 + retP1;
+          document.getElementById('prio-legend').innerHTML = [
+            { l: 'Prioridade 0', c: '#dc2626', v: retP0 },
+            { l: 'Prioridade 1', c: '#1d4ed8', v: retP1 }
+          ].map(d => `
     <div class="dl-item">
       <div class="dl-dot" style="background:${d.c}"></div>
       <div class="dl-label">${d.l}</div>
@@ -2600,13 +2636,13 @@
       </div>
     </div>`).join('');
 
-        // ---- HORIZONTAL BARS — PROGRESSO ----
-        const maxPct = 100;
-        const hbarHTML = obras.map(o => {
-          const pct = o.total ? Math.round(o.conc / o.total * 100) : 0;
-          const color = pct >= 80 ? '#16a34a' : pct >= 30 ? '#d97706' : '#dc2626';
-          const shortName = o.obra.replace('MOTIVA / ', '').replace(' (EPA)', '').replace('CCR ', '');
-          return `<div class="hbar-item">
+          // ---- HORIZONTAL BARS — PROGRESSO ----
+          const maxPct = 100;
+          const hbarHTML = obras.map(o => {
+            const pct = o.total ? Math.round(o.conc / o.total * 100) : 0;
+            const color = pct >= 80 ? '#16a34a' : pct >= 30 ? '#d97706' : '#dc2626';
+            const shortName = o.obra.replace('MOTIVA / ', '').replace(' (EPA)', '').replace('CCR ', '');
+            return `<div class="hbar-item">
       <div class="hbar-header">
         <div class="hbar-label" title="${o.obra}">${shortName}</div>
         <div class="hbar-vals">
@@ -2618,16 +2654,16 @@
         <div class="hbar-fill" style="width:${pct}%;background:${color}"></div>
       </div>
     </div>`;
-        }).join('');
-        document.getElementById('hbar-obras').innerHTML = hbarHTML;
+          }).join('');
+          document.getElementById('hbar-obras').innerHTML = hbarHTML;
 
-        // ---- HORIZONTAL BARS — RETENÇÃO ----
-        const maxRet = Math.max(...obras.map(o => o.retencao));
-        const retHTML = obras.map(o => {
-          const w = maxRet > 0 ? Math.round(o.retencao / maxRet * 100) : 0;
-          const money = 'R$ ' + o.retencao.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-          const shortName = o.obra.replace('MOTIVA / ', '').replace(' (EPA)', '').replace('CCR ', '');
-          return `<div class="retbar-item">
+          // ---- HORIZONTAL BARS — RETENÇÃO ----
+          const maxRet = Math.max(...obras.map(o => o.retencao));
+          const retHTML = obras.map(o => {
+            const w = maxRet > 0 ? Math.round(o.retencao / maxRet * 100) : 0;
+            const money = 'R$ ' + o.retencao.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            const shortName = o.obra.replace('MOTIVA / ', '').replace(' (EPA)', '').replace('CCR ', '');
+            return `<div class="retbar-item">
       <div class="retbar-header">
         <div class="retbar-name" title="${o.obra}">${shortName}</div>
         <div class="retbar-money">${money}</div>
@@ -2636,28 +2672,28 @@
         <div class="retbar-fill" style="width:${w}%"></div>
       </div>
     </div>`;
-        }).join('');
-        document.getElementById('retbar-obras').innerHTML = retHTML;
+          }).join('');
+          document.getElementById('retbar-obras').innerHTML = retHTML;
 
-        // unused chart vars — clear them
-        if (chartObras) { try { chartObras.destroy(); } catch (e) { } chartObras = null; }
-        if (chartRet) { try { chartRet.destroy(); } catch (e) { } chartRet = null; }
-      }
+          // unused chart vars — clear them
+          if (chartObras) { try { chartObras.destroy(); } catch (e) { } chartObras = null; }
+          if (chartRet) { try { chartRet.destroy(); } catch (e) { } chartRet = null; }
+        }
 
-      // ---- INITIALIZATION ----
-      // This is the single entry point for the application
-      checkUserSession();
-
-      // Listen for auth state changes (login/logout/token refresh)
-      _supabase.auth.onAuthStateChange((event, session) => {
-        console.log("Auth event:", event);
+        // ---- INITIALIZATION ----
+        // This is the single entry point for the application
         checkUserSession();
-      });
 
-    </script>
-    <!-- TOAST NOTIFICATION -->
-    <div id="toast"></div>
-  </div>
+        // Listen for auth state changes (login/logout/token refresh)
+        _supabase.auth.onAuthStateChange((event, session) => {
+          console.log("Auth event:", event);
+          checkUserSession();
+        });
+
+      </script>
+      <!-- TOAST NOTIFICATION -->
+      <div id="toast"></div>
+    </div>
 </body>
 
 </html>
