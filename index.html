@@ -1643,7 +1643,8 @@
               <option>Concluído</option>
               <option>Em Andamento</option>
               <option>Pendente</option>
-              <option>CONGELADO</option>
+              <option>Atrasado</option>
+              <option>Congelado</option>
             </select>
             <select class="filter-sel" id="f-resp" onchange="filterPlano()">
               <option value="">Todos responsáveis</option>
@@ -1687,7 +1688,8 @@
               <option>Concluído</option>
               <option>Em Andamento</option>
               <option>Pendente</option>
-              <option>CONGELADO</option>
+              <option>Atrasado</option>
+              <option>Congelado</option>
             </select>
             <div class="tb-spacer"></div>
             <button class="btn-add editor-only" style="display:none" onclick="openAddModal(currentObra)">
@@ -1770,7 +1772,7 @@
               <option>Em Andamento</option>
               <option>Concluído</option>
               <option>Atrasado</option>
-              <option>CONGELADO</option>
+              <option>Congelado</option>
               <option>Aguardando</option>
             </select>
           </div>
@@ -1781,8 +1783,8 @@
               placeholder="Nome">
           </div>
           <div class="form-group">
-            <div class="form-label">E-mail Resp.</div><input class="form-input" id="f-email-responsavel" type="email" placeholder="globalsrv.com.br"
-              placeholder="@globalsrv.com.br
+            <div class="form-label">E-mail Resp.</div>
+            <input class="form-input" id="f-email-responsavel" type="email" placeholder="email@globalsrv.com.br">
           </div>
         </div>
         <div class=" form-row">
@@ -1801,12 +1803,12 @@
                 type="date">
             </div>
           </div>
-          <div class="form-row" style="margin-top:10px">
-            <div class="form-group">
-              <div class="form-label">Observações Gerais</div><textarea class="form-textarea" id="f-observacoes"
-                placeholder="Digite aqui anotações importantes..."></textarea>
-            </div>
+        <div class="form-row" style="margin-top:10px">
+          <div class="form-group full">
+            <div class="form-label">Observações Gerais</div>
+            <textarea class="form-textarea" id="f-observacoes" placeholder="Digite aqui anotações importantes..." style="min-height:100px"></textarea>
           </div>
+        </div>
           <div class="modal-actions">
             <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
             <button class="btn btn-primary editor-only" style="display:none" id="save-btn" onclick="saveAction()">Salvar
@@ -1997,6 +1999,7 @@
           if (sn === 'em andamento') return `<span class="badge badge-a">Em Andamento</span>`;
           if (sn === 'pendente') return `<span class="badge" style="background:var(--purple-l);color:var(--purple);border-color:var(--purple)">Pendente</span>`;
           if (sn === 'congelado') return `<span class="badge badge-g">Congelado</span>`;
+          if (sn === 'atrasado') return `<span class="badge" style="background:var(--red-l);color:var(--red);border-color:var(--red-m)">Atrasado</span>`;
           return `<span class="badge badge-gray">${s || ''}</span>`;
         }
         function progColor(pct) {
