@@ -1965,6 +1965,9 @@
       }
 
       // ---- UTILS ----
+      function normStatus(s) {
+        return (s || '').toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      }
       function fmtMoney(v) {
         return 'R$ ' + (v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
@@ -1974,15 +1977,15 @@
         return `${dd}/${m}/${y}`;
       }
       function statusBadge(s, dataPrev) {
-        const sl = (s || '').toLowerCase();
-        const todayStr = new Date().toISOString().split('T')[0];
-        const isLate = sl !== 'concluido' && dataPrev && dataPrev < todayStr;
+        const todayStr = new Date().toLocaleDateString('en-CA');
+        const sn = normStatus(s);
+        const isLate = sn !== 'concluido' && dataPrev && dataPrev < todayStr;
         
         if (isLate) return `<span class="badge" style="background:var(--red-l);color:var(--red);border-color:var(--red-m)">Atrasado</span>`;
-        if (sl === 'concluido' || sl === 'concluído') return `<span class="badge badge-c">Concluído</span>`;
-        if (sl === 'em andamento') return `<span class="badge badge-a">Em Andamento</span>`;
-        if (sl === 'pendente') return `<span class="badge" style="background:var(--purple-l);color:var(--purple);border-color:var(--purple)">Pendente</span>`;
-        if (sl === 'congelado') return `<span class="badge badge-g">Congelado</span>`;
+        if (sn === 'concluido') return `<span class="badge badge-c">Concluído</span>`;
+        if (sn === 'em andamento') return `<span class="badge badge-a">Em Andamento</span>`;
+        if (sn === 'pendente') return `<span class="badge" style="background:var(--purple-l);color:var(--purple);border-color:var(--purple)">Pendente</span>`;
+        if (sn === 'congelado') return `<span class="badge badge-g">Congelado</span>`;
         return `<span class="badge badge-gray">${s || ''}</span>`;
       }
       function progColor(pct) {
@@ -2003,11 +2006,11 @@
         actions.forEach(a => {
           if (!obras[a.obra]) obras[a.obra] = { obra: a.obra, gestor: a.gestor, prioridade: a.prioridade, retencao: a.valor_retido, conc: 0, and: 0, pend: 0, cong: 0, ag: 0, total: 0 };
           const o = obras[a.obra];
-          const sl = (a.status || '').toLowerCase();
-          if (sl === 'concluído') o.conc++;
-          else if (sl === 'em andamento') o.and++;
-          else if (sl === 'congelado' || sl === 'congelado') o.cong++;
-          else if (sl === 'aguardando') o.ag++;
+          const sn = normStatus(a.status);
+          if (sn === 'concluido') o.conc++;
+          else if (sn === 'em andamento') o.and++;
+          else if (sn === 'congelado') o.cong++;
+          else if (sn === 'aguardando') o.ag++;
           else o.pend++;
           o.total++;
         });
@@ -2086,15 +2089,15 @@
           if (obra && a.obra !== obra) return false;
           
           if (status) {
-            const sl = (a.status || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const st = status.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const isLate = (sl !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
+            const sn = normStatus(a.status);
+            const tn = normStatus(status);
+            const isLate = (sn !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
 
-            if (st === 'atrasado') {
+            if (tn === 'atrasado') {
               if (!isLate) return false;
-            } else if (st === 'pendente') {
-              if (sl !== 'pendente' || isLate) return false;
-            } else if (sl !== st) {
+            } else if (tn === 'pendente') {
+              if (sn !== 'pendente' || isLate) return false;
+            } else if (sn !== tn) {
               return false;
             }
           }
@@ -2480,21 +2483,20 @@
       function renderCharts() {
         const obras = getObrasStats();
 
-        const todayStr = new Date().toISOString().split('T')[0];
+        const todayStr = new Date().toLocaleDateString('en-CA');
 
         // Helper to normalize status checks
         const getStatusCount = (target) => {
           return actions.filter(a => {
-            const s = (a.status || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const t = target.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const isLate = (s !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
+            const sn = normStatus(a.status);
+            const tn = normStatus(target);
+            const isLate = (sn !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
             
-            if (t === 'atrasado') return isLate;
-            if (t === 'concluido') return s === 'concluido';
-            // If checking Pendente, we exclude the ones that are actually Atrasado
-            if (t === 'pendente') return s === 'pendente' && !isLate;
+            if (tn === 'atrasado') return isLate;
+            if (tn === 'concluido') return sn === 'concluido';
+            if (tn === 'pendente') return sn === 'pendente' && !isLate;
             
-            return s === t;
+            return sn === tn;
           }).length;
         };
 
