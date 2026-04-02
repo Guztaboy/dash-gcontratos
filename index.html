@@ -80,6 +80,21 @@
       box-shadow: var(--shadow)
     }
 
+    .kpi-card {
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border-top: 4px solid transparent;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .kpi-card.purple {
+      border-top-color: var(--purple);
+    }
+
     .topbar-logo {
       display: flex;
       align-items: center;
@@ -330,11 +345,14 @@
       box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
-      transition: box-shadow .2s
+      cursor: pointer;
+      transition: all .2s;
     }
 
     .kpi:hover {
-      box-shadow: var(--shadow-md)
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--blue-m);
     }
 
     .kpi::after {
@@ -361,6 +379,10 @@
 
     .kpi.kred::after {
       background: var(--red)
+    }
+
+    .kpi.kpurple::after {
+      background: var(--purple)
     }
 
     .kpi.kgray::after {
@@ -397,6 +419,10 @@
 
     .kpi.kred .kpi-val {
       color: var(--red)
+    }
+
+    .kpi.kpurple .kpi-val {
+      color: var(--purple)
     }
 
     .kpi.kgray .kpi-val {
@@ -1490,30 +1516,30 @@
           </div>
 
         <div class="kpi-grid">
-          <div class="kpi kblue">
+          <div class="kpi kblue" onclick="filterByStatus('')">
             <div class="kpi-lbl">Total</div>
             <div class="kpi-val" id="kpi-total">0</div>
             <div class="kpi-sub">Todas as obras</div>
           </div>
-          <div class="kpi kgreen">
+          <div class="kpi kgreen" onclick="filterByStatus('Concluído')">
             <div class="kpi-lbl">Concluídas</div>
             <div class="kpi-val" id="kpi-conc">0</div>
             <div class="kpi-sub" id="kpi-conc-pct">0%</div>
           </div>
-          <div class="kpi kyellow">
+          <div class="kpi kyellow" onclick="filterByStatus('Em Andamento')">
             <div class="kpi-lbl">Em Andamento</div>
             <div class="kpi-val" id="kpi-and">0</div>
             <div class="kpi-sub" id="kpi-and-pct">0%</div>
           </div>
-          <div class="kpi kred">
+          <div class="kpi kpurple" onclick="filterByStatus('Pendente')">
             <div class="kpi-lbl">Pendentes</div>
             <div class="kpi-val" id="kpi-pend">0</div>
             <div class="kpi-sub" id="kpi-pend-pct">0%</div>
           </div>
-          <div class="kpi kgray">
-            <div class="kpi-lbl">Congeladas</div>
-            <div class="kpi-val">2</div>
-            <div class="kpi-sub">2,9%</div>
+          <div class="kpi kred" onclick="filterByStatus('Atrasado')">
+            <div class="kpi-lbl">Atrasados</div>
+            <div class="kpi-val" id="kpi-atras">0</div>
+            <div class="kpi-sub" id="kpi-atras-pct">0%</div>
           </div>
         </div>
 
@@ -1644,7 +1670,6 @@
           <div class="pagination" id="plano-pag"></div>
         </div>
       </div>
-
       <!-- OBRA DETALHE -->
       <div class="page" id="page-obra">
         <button class="back-btn" onclick="goPage('dashboard')">
@@ -1744,6 +1769,7 @@
               <option>Pendente</option>
               <option>Em Andamento</option>
               <option>Concluído</option>
+              <option>Atrasado</option>
               <option>CONGELADO</option>
               <option>Aguardando</option>
             </select>
@@ -1751,10 +1777,17 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <div class="form-label">Responsável</div><input class="form-input" id="f-responsavel" type="text">
+            <div class="form-label">Responsável</div><input class="form-input" id="f-responsavel" type="text" placeholder="Nome">
           </div>
           <div class="form-group">
+            <div class="form-label">E-mail Resp.</div><input class="form-input" id="f-email-responsavel" type="email" placeholder="email@exemplo.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
             <div class="form-label">Apoio</div><input class="form-input" id="f-apoio" type="text">
+          </div>
+          <div class="form-group">
           </div>
         </div>
         <div class="form-row">
@@ -1940,11 +1973,15 @@
         const [y, m, dd] = d.split('-');
         return `${dd}/${m}/${y}`;
       }
-      function statusBadge(s) {
+      function statusBadge(s, dataPrev) {
         const sl = (s || '').toLowerCase();
-        if (sl === 'concluído') return `<span class="badge badge-c">Concluído</span>`;
+        const todayStr = new Date().toISOString().split('T')[0];
+        const isLate = sl !== 'concluido' && dataPrev && dataPrev < todayStr;
+        
+        if (isLate) return `<span class="badge" style="background:var(--red-l);color:var(--red);border-color:var(--red-m)">Atrasado</span>`;
+        if (sl === 'concluido' || sl === 'concluído') return `<span class="badge badge-c">Concluído</span>`;
         if (sl === 'em andamento') return `<span class="badge badge-a">Em Andamento</span>`;
-        if (sl === 'pendente') return `<span class="badge badge-p">Pendente</span>`;
+        if (sl === 'pendente') return `<span class="badge" style="background:var(--purple-l);color:var(--purple);border-color:var(--purple)">Pendente</span>`;
         if (sl === 'congelado') return `<span class="badge badge-g">Congelado</span>`;
         return `<span class="badge badge-gray">${s || ''}</span>`;
       }
@@ -2044,9 +2081,24 @@
         const obra = document.getElementById('f-obra').value;
         const status = document.getElementById('f-status').value;
         const resp = document.getElementById('f-resp').value;
+        const todayStr = new Date().toISOString().split('T')[0];
         planoFiltered = actions.filter(a => {
           if (obra && a.obra !== obra) return false;
-          if (status && (a.status || '').toLowerCase() !== status.toLowerCase()) return false;
+          
+          if (status) {
+            const sl = (a.status || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const st = status.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const isLate = (sl !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
+
+            if (st === 'atrasado') {
+              if (!isLate) return false;
+            } else if (st === 'pendente') {
+              if (sl !== 'pendente' || isLate) return false;
+            } else if (sl !== st) {
+              return false;
+            }
+          }
+
           if (resp && a.responsavel !== resp) return false;
           if (search && !a.acao.toLowerCase().includes(search) && !(a.responsavel || '').toLowerCase().includes(search)) return false;
           return true;
@@ -2069,7 +2121,7 @@
       <td class="td-acao">${a.acao}</td>
       <td style="color:var(--text2)">${a.responsavel || '—'}</td>
       <td style="color:var(--text3)">${a.apoio || '—'}</td>
-      <td>${statusBadge(a.status)}</td>
+      <td>${statusBadge(a.status, a.data_prevista)}</td>
       <td class="td-mono">${fmtDate(a.data_prevista)}</td>
       <td class="td-mono">${fmtDate(a.data_real)}</td>
       ${editBtn}
@@ -2205,6 +2257,7 @@
         document.getElementById('f-tipo').value = a.tipo || 'Documentação';
         document.getElementById('f-modal-status').value = a.status || 'Pendente';
         document.getElementById('f-responsavel').value = a.responsavel || '';
+        document.getElementById('f-email-responsavel').value = a.email_responsavel || '';
         document.getElementById('f-apoio').value = a.apoio || '';
         document.getElementById('f-data-prev').value = a.data_prevista || '';
         document.getElementById('f-data-real').value = a.data_real || '';
@@ -2217,6 +2270,7 @@
         document.getElementById('f-tipo').value = 'Documentação';
         document.getElementById('f-modal-status').value = 'Pendente';
         document.getElementById('f-responsavel').value = '';
+        document.getElementById('f-email-responsavel').value = '';
         document.getElementById('f-apoio').value = '';
         document.getElementById('f-data-prev').value = '';
         document.getElementById('f-data-real').value = '';
@@ -2243,6 +2297,7 @@
           tipo: document.getElementById('f-tipo').value,
           status: currentStatus,
           responsavel: document.getElementById('f-responsavel').value,
+          email_responsavel: document.getElementById('f-email-responsavel').value,
           apoio: document.getElementById('f-apoio').value,
           data_prevista: document.getElementById('f-data-prev').value || null,
           data_real: document.getElementById('f-data-real').value || null,
@@ -2410,17 +2465,35 @@
         setTimeout(() => t.classList.remove('show'), 2500);
       }
 
+      function filterByStatus(statusName) {
+        goPage('plano');
+        const select = document.getElementById('f-status');
+        if (select) {
+          select.value = statusName;
+          filterPlano();
+        }
+      }
+
       // ---- CHARTS ----
       let chartDonut, chartPrio, chartObras, chartRet;
 
       function renderCharts() {
         const obras = getObrasStats();
 
+        const todayStr = new Date().toISOString().split('T')[0];
+
         // Helper to normalize status checks
         const getStatusCount = (target) => {
           return actions.filter(a => {
             const s = (a.status || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const t = target.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const isLate = (s !== 'concluido' && a.data_prevista && a.data_prevista < todayStr);
+            
+            if (t === 'atrasado') return isLate;
+            if (t === 'concluido') return s === 'concluido';
+            // If checking Pendente, we exclude the ones that are actually Atrasado
+            if (t === 'pendente') return s === 'pendente' && !isLate;
+            
             return s === t;
           }).length;
         };
@@ -2428,6 +2501,7 @@
         const conc = getStatusCount('Concluído');
         const and = getStatusCount('Em Andamento');
         const pend = getStatusCount('Pendente');
+        const atras = getStatusCount('Atrasado');
         const cong = getStatusCount('Congelado');
         const total = actions.length;
 
@@ -2445,11 +2519,13 @@
         document.getElementById('kpi-conc').textContent = conc;
         document.getElementById('kpi-and').textContent = and;
         document.getElementById('kpi-pend').textContent = pend;
+        document.getElementById('kpi-atras').textContent = atras;
 
         const getPctStr = (v) => total > 0 ? Math.round((v / total) * 100) + '%' : '0%';
         document.getElementById('kpi-conc-pct').textContent = getPctStr(conc);
         document.getElementById('kpi-and-pct').textContent = getPctStr(and);
         document.getElementById('kpi-pend-pct').textContent = getPctStr(pend);
+        document.getElementById('kpi-atras-pct').textContent = getPctStr(atras);
         
         const labelRet = document.getElementById('ch-total-ret-label');
         if (labelRet) labelRet.textContent = `Valor retido total: ${fmtMoney(totalRetencaoGlobal)}`;
@@ -2461,8 +2537,8 @@
           data: {
             labels: ['Concluído', 'Em Andamento', 'Pendente', 'Congelado'],
             datasets: [{
-              data: [conc, and, pend, cong],
-              backgroundColor: ['#16a34a', '#d97706', '#94a3b8', '#1d4ed8'],
+              data: [conc, and, pend, atras, cong],
+              backgroundColor: ['#16a34a', '#d97706', '#7c3aed', '#dc2626', '#1d4ed8'],
               borderColor: '#ffffff', borderWidth: 3, hoverOffset: 8
             }]
           },
@@ -2474,15 +2550,18 @@
         document.getElementById('donut-total').textContent = total;
 
         // Custom legend for donut
-        const dColors = ['#16a34a', '#d97706', '#94a3b8', '#1d4ed8'];
-        const dLabels = ['Concluído', 'Em Andamento', 'Pendente', 'Congelado'];
-        const dVals = [conc, and, pend, cong];
-        document.getElementById('donut-legend').innerHTML = dLabels.map((l, i) => `
+        const dColors = ['#16a34a', '#d97706', '#7c3aed', '#dc2626', '#1d4ed8'];
+        const dLabels = ['Concluído', 'Em Andamento', 'Pendente', 'Atrasado', 'Congelado'];
+        const dVals = [conc, and, pend, atras, cong];
+        document.getElementById('donut-legend').innerHTML = dLabels.map((l, i) => {
+          if (dVals[i] === 0 && l === 'Congelado') return ''; // hide if zero and less important
+          return `
     <div class="dl-item">
       <div class="dl-dot" style="background:${dColors[i]}"></div>
       <div class="dl-label">${l}</div>
-      <div class="dl-val">${dVals[i]}<span class="dl-pct">${Math.round(dVals[i] / total * 100)}%</span></div>
-    </div>`).join('');
+      <div class="dl-val">${dVals[i]}<span class="dl-pct">${total > 0 ? Math.round(dVals[i] / total * 100) : 0}%</span></div>
+    </div>`;
+        }).join('');
 
         // ---- DONUT PRIORIDADE (Chart.js) ----
         const retP0 = obras.filter(o => o.prioridade === 'PRIORIDADE 0').reduce((s, o) => s + o.retencao, 0);
