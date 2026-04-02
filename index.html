@@ -1978,6 +1978,13 @@
         }
 
         // ---- UTILS ----
+        function getTodayStr() {
+          const d = new Date();
+          const y = d.getFullYear();
+          const m = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
+          return `${y}-${m}-${dd}`;
+        }
         function normStatus(s) {
           return (s || '').toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         }
@@ -1990,7 +1997,7 @@
           return `${dd}/${m}/${y}`;
         }
         function statusBadge(s, dataPrev) {
-          const todayStr = new Date().toLocaleDateString('en-CA');
+          const todayStr = getTodayStr();
           const sn = normStatus(s);
           const isLate = sn !== 'concluido' && dataPrev && dataPrev < todayStr;
 
@@ -2098,7 +2105,7 @@
           const obra = document.getElementById('f-obra').value;
           const status = document.getElementById('f-status').value;
           const resp = document.getElementById('f-resp').value;
-          const todayStr = new Date().toISOString().split('T')[0];
+          const todayStr = getTodayStr();
           planoFiltered = actions.filter(a => {
             if (obra && a.obra !== obra) return false;
 
@@ -2426,7 +2433,7 @@
           <div style="background:var(--bg);padding:10px;border-radius:8px;border:1px solid var(--border)">
             <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:4px">
               <span>${h.alterado_por || 'Sistema'}</span>
-              <span>${new Date(h.data_alteracao).toLocaleString()}</span>
+              <span>${new Date(h.data_alteracao).toLocaleString('pt-BR')}</span>
             </div>
             <div style="font-weight:600;font-size:12px">${h.acao_desc || 'Alteração realizada'}</div>
             ${obsHtml}
@@ -2511,8 +2518,11 @@
 
         function renderCharts() {
           const obras = getObrasStats();
-
-          const todayStr = new Date().toLocaleDateString('en-CA');
+          const todayStr = getTodayStr();
+          
+          // Show current base date in dashboard
+          const dateIndicator = document.getElementById('base-date-indicator');
+          if (dateIndicator) dateIndicator.textContent = `Base: ${fmtDate(todayStr)}`;
 
           // Helper to normalize status checks
           const getStatusCount = (target) => {
