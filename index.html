@@ -1749,12 +1749,18 @@
         <div class="modal-title" id="modal-title">Editar Ação</div>
         <div class="form-row">
           <div class="form-group full">
-            <div class="form-label">Ação / Pendência</div><textarea class="form-textarea" id="f-acao"></textarea>
+            <div class="form-label">Obra <span style="color:red">*</span></div>
+            <select class="form-select" id="f-obra-modal" onchange="suggestObraInfo()"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <div class="form-label">Ação / Pendência <span style="color:red">*</span></div><textarea class="form-textarea" id="f-acao"></textarea>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <div class="form-label">Tipo</div>
+            <div class="form-label">Tipo <span style="color:red">*</span></div>
             <select class="form-select" id="f-tipo">
               <option>Documentação</option>
               <option>Reunião</option>
@@ -1766,7 +1772,7 @@
             </select>
           </div>
           <div class="form-group">
-            <div class="form-label">Status</div>
+            <div class="form-label">Status <span style="color:red">*</span></div>
             <select class="form-select" id="f-modal-status">
               <option>Pendente</option>
               <option>Em Andamento</option>
@@ -1779,12 +1785,25 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <div class="form-label">Responsável</div><input class="form-input" id="f-responsavel" type="text"
+            <div class="form-label">Responsável <span style="color:red">*</span></div><input class="form-input" id="f-responsavel" type="text"
               placeholder="Nome">
           </div>
           <div class="form-group">
-            <div class="form-label">E-mail Resp.</div>
+            <div class="form-label">E-mail Resp. <span style="color:red">*</span></div>
             <input class="form-input" id="f-email-responsavel" type="email" placeholder="email@globalsrv.com.br">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <div class="form-label">Gestor <span style="color:red">*</span></div>
+            <input class="form-input" id="f-gestor" type="text" placeholder="Nome do Gestor">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Prioridade <span style="color:red">*</span></div>
+            <select class="form-select" id="f-prioridade">
+              <option>PRIORIDADE 1</option>
+              <option>PRIORIDADE 0</option>
+            </select>
           </div>
         </div>
         <div class=" form-row">
@@ -1792,11 +1811,13 @@
               <div class="form-label">Apoio</div><input class="form-input" id="f-apoio" type="text">
             </div>
             <div class="form-group">
+              <div class="form-label">Valor Retido (R$)</div>
+              <input class="form-input" id="f-valor-retido" type="number" step="0.01" placeholder="0.00">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <div class="form-label">Data Prevista</div><input class="form-input" id="f-data-prev" type="date">
+              <div class="form-label">Data Prevista <span style="color:red">*</span></div><input class="form-input" id="f-data-prev" type="date">
             </div>
             <div class="form-group">
               <div class="form-label">Data Real Encerramento</div><input class="form-input" id="f-data-real"
@@ -2311,6 +2332,26 @@
           if (!isEditor) return showToast("Permissão negada");
 
           const saveBtn = document.getElementById('save-btn');
+          
+          // ---- VALIDATION ----
+          const reqFields = {
+            'Ação': document.getElementById('f-acao').value,
+            'Tipo': document.getElementById('f-tipo').value,
+            'Status': document.getElementById('f-modal-status').value,
+            'Responsável': document.getElementById('f-responsavel').value,
+            'E-mail Resp.': document.getElementById('f-email-responsavel').value,
+            'Data Prevista': document.getElementById('f-data-prev').value,
+            'Obra': document.getElementById('f-obra-modal').value,
+            'Gestor': document.getElementById('f-gestor').value
+          };
+
+          for (const [name, val] of Object.entries(reqFields)) {
+            if (!val || val.trim() === '') {
+              showToast(`Preencha o campo obrigatório: ${name} ⚠️`);
+              return;
+            }
+          }
+
           saveBtn.disabled = true;
           saveBtn.textContent = "Sincronizando...";
 
@@ -2319,7 +2360,7 @@
 
           const currentData = {
             num: editingIdx !== null ? Number(actions[editingIdx].num) : (actions.reduce((max, a) => Math.max(max, Number(a.num) || 0), 0) + 1),
-            obra: currentObra || (editingIdx !== null ? actions[editingIdx].obra : 'MOTIVA / PPA'),
+            obra: document.getElementById('f-obra-modal').value,
             tipo: document.getElementById('f-tipo').value,
             status: currentStatus,
             responsavel: document.getElementById('f-responsavel').value,
@@ -2328,17 +2369,13 @@
             data_prevista: document.getElementById('f-data-prev').value || null,
             data_real: document.getElementById('f-data-real').value || null,
             acao: document.getElementById('f-acao').value,
-            observacoes: document.getElementById('f-observacoes').value
+            observacoes: document.getElementById('f-observacoes').value,
+            gestor: document.getElementById('f-gestor').value,
+            prioridade: document.getElementById('f-prioridade').value,
+            valor_retido: Number(document.getElementById('f-valor-retido').value) || 0
           };
 
-          if (editingIdx === null) {
-            currentData.gestor = '';
-            currentData.valor_retido = 0;
-            currentData.prioridade = 'PRIORIDADE 1';
-          } else {
-            currentData.gestor = actions[editingIdx].gestor || '';
-            currentData.valor_retido = Number(actions[editingIdx].valor_retido) || 0;
-            currentData.prioridade = actions[editingIdx].prioridade || 'PRIORIDADE 1';
+          if (editingIdx !== null) {
             currentData.id = actions[editingIdx].id;
           }
 
@@ -2442,17 +2479,44 @@
         }
 
         // ---- MODAL ----
+        function suggestObraInfo() {
+          const obra = document.getElementById('f-obra-modal').value;
+          if (!obra) return;
+          const match = actions.find(a => a.obra === obra);
+          if (match) {
+            document.getElementById('f-gestor').value = match.gestor || '';
+            document.getElementById('f-valor-retido').value = match.valor_retido || 0;
+            document.getElementById('f-prioridade').value = match.prioridade || 'PRIORIDADE 1';
+          }
+        }
+
         async function openEditModal(idx) {
           editingIdx = idx;
           const a = actions[idx];
+          
+          // Populate Obra list in modal
+          const obras = [...new Set(actions.map(act => act.obra))].sort();
+          const fObra = document.getElementById('f-obra-modal');
+          fObra.innerHTML = '<option value="">Selecione a Obra...</option>' + obras.map(o => `<option value="${o}">${o}</option>`).join('');
+          fObra.value = a.obra;
+          fObra.disabled = true; // Lock obra on edit
+
           document.getElementById('modal-title').textContent = `Editar Ação #${a.num}`;
           document.getElementById('f-acao').value = a.acao || '';
           document.getElementById('f-tipo').value = a.tipo || 'Documentação';
           document.getElementById('f-modal-status').value = a.status || 'Pendente';
           document.getElementById('f-responsavel').value = a.responsavel || '';
+          document.getElementById('f-email-responsavel').value = a.email_responsavel || '';
+          document.getElementById('f-gestor').value = a.gestor || '';
+          document.getElementById('f-prioridade').value = a.prioridade || 'PRIORIDADE 1';
           document.getElementById('f-apoio').value = a.apoio || '';
+          document.getElementById('f-valor-retido').value = a.valor_retido || 0;
           document.getElementById('f-data-prev').value = a.data_prevista || '';
           document.getElementById('f-data-real').value = a.data_real || '';
+          document.getElementById('f-observacoes').value = a.observacoes || '';
+          
+          document.getElementById('modal-overlay').classList.add('open');
+          await renderTimeline(a.num);
 
           if (isEditor) {
             const saveBtn = document.getElementById('save-btn');
@@ -2460,22 +2524,38 @@
             saveBtn.disabled = false;
             saveBtn.textContent = 'Salvar alterações';
           }
-
-          document.getElementById('modal-overlay').classList.add('open');
-          await renderTimeline(a.num);
         }
 
         function openAddModal(obra) {
           editingIdx = null;
+          
+          // Populate Obra list in modal
+          const obras = [...new Set(actions.map(act => act.obra))].sort();
+          const fObra = document.getElementById('f-obra-modal');
+          fObra.innerHTML = '<option value="">Selecione a Obra...</option>' + obras.map(o => `<option value="${o}">${o}</option>`).join('');
+          
           document.getElementById('modal-title').textContent = 'Nova Ação' + (obra ? ` — ${obra}` : '');
           document.getElementById('f-acao').value = '';
           document.getElementById('f-tipo').value = 'Documentação';
           document.getElementById('f-modal-status').value = 'Pendente';
           document.getElementById('f-responsavel').value = '';
+          document.getElementById('f-email-responsavel').value = '';
+          document.getElementById('f-gestor').value = '';
+          document.getElementById('f-valor-retido').value = 0;
+          document.getElementById('f-prioridade').value = 'PRIORIDADE 1';
           document.getElementById('f-apoio').value = '';
           document.getElementById('f-data-prev').value = '';
           document.getElementById('f-data-real').value = '';
+          document.getElementById('f-observacoes').value = '';
           document.getElementById('timeline-section').style.display = 'none';
+
+          if (obra) {
+            fObra.value = obra;
+            fObra.disabled = true;
+            suggestObraInfo(); // Pre-fill gestor/valor
+          } else {
+            fObra.disabled = false;
+          }
 
           if (isEditor) {
             const saveBtn = document.getElementById('save-btn');
