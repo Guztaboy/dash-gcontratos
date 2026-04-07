@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retenções Contratuais — Global Service</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <!-- TELA DE LOGIN: Visível apenas quando o usuário não está autenticado -->
+  <div id="login-screen">
+    <div id="login-card">
+      <div class="login-logo-container">
+        <!-- Reusing the logo logic but visually larger for login -->
+        <h2 style="color:var(--blue);margin-bottom:10px">GLOBAL SERVICE</h2>
+      </div>
+      <h1 class="login-title">Dashboard de Retenções</h1>
+      <p class="login-subtitle">Acesse com sua conta Microsoft 365 da organização</p>
+      <button class="btn-login" onclick="signInWithMicrosoft()">
+        <svg class="ms-icon" viewBox="0 0 23 23">
+          <path fill="#f3f3f3" d="M0 0h23v23H0z" />
+          <path fill="#f35325" d="M1 1h10v10H1z" />
+          <path fill="#81bc06" d="M12 1h10v10H12z" />
+          <path fill="#05a6f0" d="M1 12h10v10H1z" />
+          <path fill="#ffba08" d="M12 12h10v10H12z" />
+        </svg>
+        Entrar com Microsoft 365
+      </button>
+    </div>
+  </div>
+
+  <!-- APP CONTAINER -->
+  <div id="app-container">
+
+    <!-- BARRA SUPERIOR (TOPBAR): Contém logo, navegação principal e perfil do usuário -->
+    <header class="topbar">
+      <div class="topbar-logo">
+        <img
+          src="data:image/png;base64,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"
+          alt="Global Service">
+        <div class="topbar-div"></div>
+        <div class="topbar-info">
+          <div class="t1">Retenções Contratuais</div>
+          <div class="t2">Plano de Ação — Contratual &amp; Qualidade</div>
+        </div>
+      </div>
+      <nav class="topbar-nav">
+        <button class="tnav active" onclick="goPage('dashboard')">Dashboard</button>
+        <button class="tnav" onclick="goPage('plano')">Plano de Ação</button>
+        <button class="tnav" onclick="goPage('financeiro')">Financeiro</button>
+        <button class="tnav editor-only" style="display:none" onclick="openGestaoObras()">Gestão de Obras</button>
+      </nav>
+      <div class="topbar-right">
+        <div class="date-chip" id="topbar-date"></div>
+        <button class="btn-top" onclick="fetchFromSupabase()">↻ Atualizar</button>
+        <div id="auth-section">
+          <div class="user-profile" id="user-profile-data" style="display:none">
+            <div class="avatar-wrap">
+              <img id="user-avatar" src="" alt="" class="avatar-img">
+            </div>
+            <div class="user-meta">
+              <span id="user-name" class="user-display-name">Carregando...</span>
+              <span id="user-role" class="user-role-label">Visualizador</span>
+            </div>
+            <button class="btn-logout" title="Sair" onclick="signOut()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div id="sheets-status"></div>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- PÁGINA: DASHBOARD (Resumo Geral) -->
+      <div class="page active" id="page-dashboard">
+
+        <div class="hero">
+          <div class="hero-left">
+            <div class="hero-badge">Retenção Total Consolidada</div>
+            <div class="hero-val" id="hero-val">R$ 0,00</div>
+            <div class="hero-sub">Obras ativas &nbsp;•&nbsp; base <span id="hero-base-date"></span></div>
+          </div>
+          <div class="hero-right">
+            <div class="hero-pct" id="hero-pct">0%</div>
+            <div class="hero-pct-sub" id="hero-summary-label">0 de 0 ações concluídas</div>
+          </div>
+        </div>
+
+        <!-- GRID DE INDICADORES (KPIs): Cards coloridos com contagens totais -->
+        <div class="kpi-grid">
+          <div class="kpi kblue" onclick="filterByStatus('')">
+            <div class="kpi-lbl">Total</div>
+            <div class="kpi-val" id="kpi-total">0</div>
+            <div class="kpi-sub">Todas as obras</div>
+          </div>
+          <div class="kpi kgreen" onclick="filterByStatus('Concluído')">
+            <div class="kpi-lbl">Concluídas</div>
+            <div class="kpi-val" id="kpi-conc">0</div>
+            <div class="kpi-sub" id="kpi-conc-pct">0%</div>
+          </div>
+          <div class="kpi kyellow" onclick="filterByStatus('Em Andamento')">
+            <div class="kpi-lbl">Em Andamento</div>
+            <div class="kpi-val" id="kpi-and">0</div>
+            <div class="kpi-sub" id="kpi-and-pct">0%</div>
+          </div>
+          <div class="kpi kpurple" onclick="filterByStatus('Pendente')">
+            <div class="kpi-lbl">Pendentes</div>
+            <div class="kpi-val" id="kpi-pend">0</div>
+            <div class="kpi-sub" id="kpi-pend-pct">0%</div>
+          </div>
+          <div class="kpi kred" onclick="filterByStatus('Atrasado')">
+            <div class="kpi-lbl">Atrasados</div>
+            <div class="kpi-val" id="kpi-atras">0</div>
+            <div class="kpi-sub" id="kpi-atras-pct">0%</div>
+          </div>
+        </div>
+
+        <!-- SEÇÃO DE GRÁFICOS: Donut charts e barras de progresso por obra -->
+        <div class="charts-row">
+          <!-- STATUS DONUT -->
+          <div class="ch-card">
+            <div class="ch-title">Distribuição de Status</div>
+            <div class="ch-subtitle">Total de ações por situação</div>
+            <div class="donut-wrap">
+              <div class="donut-canvas-wrap" style="width:160px;height:160px">
+                <canvas id="chart-donut" width="160" height="160"></canvas>
+                <div class="donut-center">
+                  <div class="donut-center-val" id="donut-total">70</div>
+                  <div class="donut-center-lbl">ações</div>
+                </div>
+              </div>
+              <div class="donut-legend" id="donut-legend"></div>
+            </div>
+          </div>
+
+          <!-- RETENÇÃO DONUT -->
+          <div class="ch-card">
+            <div class="ch-title">Retenção por Prioridade</div>
+            <div class="ch-subtitle" id="ch-total-ret-label">Valor retido total: R$ 0,00</div>
+            <div class="donut-wrap">
+              <div class="donut-canvas-wrap" style="width:160px;height:160px">
+                <canvas id="chart-prio" width="160" height="160"></canvas>
+                <div class="donut-center">
+                  <div class="donut-center-val" style="font-size:14px">R$ 3,2M</div>
+                  <div class="donut-center-lbl">retido</div>
+                </div>
+              </div>
+              <div class="donut-legend" id="prio-legend"></div>
+            </div>
+          </div>
+
+          <!-- PROGRESSO POR OBRA -->
+          <div class="ch-card wide">
+            <div class="ch-title">Progresso por Obra</div>
+            <div class="ch-subtitle">% de ações concluídas · verde ≥ 80% · amarelo ≥ 30% · vermelho &lt; 30%</div>
+            <div class="hbar-list" id="hbar-obras"></div>
+          </div>
+
+          <!-- RETENÇÃO POR OBRA -->
+          <div class="ch-card wide">
+            <div class="ch-title">Retenção Financeira por Obra</div>
+            <div class="ch-subtitle">Valor retido em R$ · proporcional ao maior valor</div>
+            <div class="retbar-list" id="retbar-obras"></div>
+          </div>
+        </div>
+
+        <!-- TABELA DE STATUS POR OBRA: Lista detalhada com progresso e retenção por obra -->
+        <div class="sec-hdr">
+          <div class="sec-ttl">Status por Obra</div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Obra</th>
+                <th>Gestor</th>
+                <th>Prior.</th>
+                <th style="text-align:center">Conc.</th>
+                <th style="text-align:center">Andamento</th>
+                <th style="text-align:center">Pendente</th>
+                <th style="text-align:center">Cong.</th>
+                <th style="text-align:center">Total</th>
+                <th>Progresso</th>
+                <th>Retenção (R$)</th>
+                <th>Situação</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="dash-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PÁGINA: PLANO DE AÇÃO (Lista Global de Ações) -->
+      <div class="page" id="page-plano">
+        <div class="sec-hdr" style="margin-bottom:20px">
+          <div>
+            <div style="font-size:20px;font-weight:700;margin-bottom:3px">Plano de Ação Consolidado</div>
+            <div style="font-size:13px;color:var(--text3)">Todas as obras — 70 ações</div>
+          </div>
+          <button class="btn-add editor-only" style="display:none" onclick="openAddModal(null)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Nova Ação
+          </button>
+        </div>
+        <div class="tbl-wrap">
+          <div class="tbl-toolbar">
+            <input class="search-inp" type="text" placeholder="Buscar ação ou responsável..." oninput="filterPlano()">
+            <select class="filter-sel" id="f-obra" onchange="filterPlano()">
+              <option value="">Todas as obras</option>
+            </select>
+            <select class="filter-sel" id="f-status" onchange="filterPlano()">
+              <option value="">Todos os status</option>
+              <option>Concluído</option>
+              <option>Em Andamento</option>
+              <option>Pendente</option>
+              <option>Atrasado</option>
+              <option>Congelado</option>
+            </select>
+            <select class="filter-sel" id="f-resp" onchange="filterPlano()">
+              <option value="">Todos responsáveis</option>
+            </select>
+            <div class="tb-spacer"></div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Obra</th>
+                <th>Tipo</th>
+                <th>Ação / Pendência</th>
+                <th>Responsável</th>
+                <th>Apoio</th>
+                <th>Status</th>
+                <th>Dt. Prevista</th>
+                <th>Dt. Encerramento</th>
+                <th class="editor-only" style="display:none">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="plano-tbody"></tbody>
+          </table>
+          <div class="pagination" id="plano-pag"></div>
+        </div>
+      </div>
+      <!-- PÁGINA: DETALHE DA OBRA (Visão individual de cada obra) -->
+      <div class="page" id="page-obra">
+        <button class="back-btn" onclick="goPage('dashboard')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Voltar ao Dashboard
+        </button>
+        <div id="obra-header-content"></div>
+        <div class="tbl-wrap">
+          <div class="tbl-toolbar">
+            <input class="search-inp" type="text" placeholder="Buscar ação..." oninput="filterObra()">
+            <select class="filter-sel" id="f-obra-status" onchange="filterObra()">
+              <option value="">Todos os status</option>
+              <option>Concluído</option>
+              <option>Em Andamento</option>
+              <option>Pendente</option>
+              <option>Atrasado</option>
+              <option>Congelado</option>
+            </select>
+            <div class="tb-spacer"></div>
+            <button class="btn-add editor-only" style="display:none" onclick="openAddModal(currentObra)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Nova Ação
+            </button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Tipo</th>
+                <th>Ação / Pendência</th>
+                <th>Responsável</th>
+                <th>Apoio</th>
+                <th>Status</th>
+                <th>Dt. Prevista</th>
+                <th>Dt. Encerramento</th>
+                <th class="editor-only" style="display:none">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="obra-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PÁGINA: FINANCEIRO (Resumo de Retenções Contratuais) -->
+      <div class="page" id="page-financeiro">
+        <div style="font-size:20px;font-weight:700;margin-bottom:4px">Resumo Financeiro</div>
+        <div style="font-size:13px;color:var(--text3);margin-bottom:20px">Retenções por obra — base <span id="fin-base-date"></span></div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Obra</th>
+                <th>Gestor</th>
+                <th>Prioridade</th>
+                <th>Retenção (R$)</th>
+                <th style="text-align:center">Ações</th>
+                <th>Progresso</th>
+                <th>Situação</th>
+              </tr>
+            </thead>
+            <tbody id="fin-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- MODAL DE EDIÇÃO DE AÇÃO: Formulário para criar/editar tarefas -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+      <div class="modal">
+        <div class="modal-title" id="modal-title">Editar Ação</div>
+        <div class="form-row">
+          <div class="form-group full">
+            <div class="form-label">Obra <span style="color:red">*</span></div>
+            <select class="form-select" id="f-obra-modal" onchange="suggestObraInfo()"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <div class="form-label">Ação / Pendência <span style="color:red">*</span></div><textarea
+              class="form-textarea" id="f-acao"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <div class="form-label">Tipo <span style="color:red">*</span></div>
+            <select class="form-select" id="f-tipo">
+              <option>Documentação</option>
+              <option>Reunião</option>
+              <option>Qualidade</option>
+              <option>Comunicação</option>
+              <option>Certificado</option>
+              <option>Campo</option>
+              <option>Vistoria</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Status <span style="color:red">*</span></div>
+            <select class="form-select" id="f-modal-status">
+              <option>Pendente</option>
+              <option>Em Andamento</option>
+              <option>Concluído</option>
+              <option>Atrasado</option>
+              <option>Congelado</option>
+              <option>Aguardando</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <div class="form-label">Responsável <span style="color:red">*</span></div><input class="form-input"
+              id="f-responsavel" type="text" placeholder="Nome">
+          </div>
+          <div class="form-group">
+            <div class="form-label">E-mail Resp. <span style="color:red">*</span></div>
+            <input class="form-input" id="f-email-responsavel" type="email" placeholder="email@globalsrv.com.br">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <div class="form-label">Gestor <span style="color:red">*</span></div>
+            <input class="form-input" id="f-gestor" type="text" placeholder="Nome do Gestor">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Prioridade <span style="color:red">*</span></div>
+            <select class="form-select" id="f-prioridade">
+              <option>PRIORIDADE 0</option>
+              <option>PRIORIDADE 1</option>
+              <option>PRIORIDADE 2</option>
+              <option>PRIORIDADE 3</option>
+              <option>PRIORIDADE 4</option>
+              <option>PRIORIDADE 5</option>
+            </select>
+          </div>
+        </div>
+        <div class=" form-row">
+          <div class="form-group">
+            <div class="form-label">Apoio</div><input class="form-input" id="f-apoio" type="text">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Valor Retido (R$) <span
+                style="font-size:10px;text-transform:none;opacity:.6;margin-left:5px">(Opcional)</span></div>
+            <input class="form-input" id="f-valor-retido" type="number" step="0.01" placeholder="Não obrigatório">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <div class="form-label">Data Prevista <span style="color:red">*</span></div><input class="form-input"
+              id="f-data-prev" type="date">
+          </div>
+          <div class="form-group">
+            <div class="form-label">Data Real Encerramento</div><input class="form-input" id="f-data-real" type="date">
+          </div>
+        </div>
+        <div class="form-row" style="margin-top:10px">
+          <div class="form-group full">
+            <div class="form-label">Observações Gerais</div>
+            <textarea class="form-textarea" id="f-observacoes" placeholder="Digite aqui anotações importantes..."
+              style="min-height:100px"></textarea>
+          </div>
+        </div>
+        <div class="modal-actions" style="display:flex;gap:8px;align-items:center">
+          <button class="btn btn-ghost editor-only" style="display:none;background:var(--red-l);color:var(--red);border-color:var(--red-m)" id="delete-btn" onclick="deleteAction()">🗑 Excluir</button>
+          <div style="flex:1"></div>
+          <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+          <button class="btn btn-primary editor-only" style="display:none" id="save-btn" onclick="saveAction()">Salvar alterações</button>
+        </div>
+        <!-- TIMELINE SECTION -->
+        <div id="timeline-section"
+          style="margin-top:24px;border-top:1px solid var(--border2);padding-top:20px;display:none">
+          <div class="form-label" style="margin-bottom:12px">Histórico de Alterações</div>
+          <div id="timeline-list" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: GESTÃO DE OBRAS (Menu do Editor para cadastrar obras) -->
+    <div class="modal-overlay top-align" id="obras-overlay" onclick="closeGestaoObras(event)">
+      <div class="modal" style="width:700px;max-width:95vw;max-height:80vh;overflow-y:auto">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div class="modal-title" style="margin-bottom:0">Gestão de Obras</div>
+          <button class="btn btn-primary" style="font-size:12px;padding:6px 14px" onclick="openNovaObraForm()">+ Nova Obra</button>
+        </div>
+        <!-- FORM NOVA/EDITAR OBRA -->
+        <div id="obra-form-wrap" style="display:none;background:var(--bg);border-radius:12px;padding:20px;margin-bottom:20px;border:1px solid var(--border)">
+          <div style="font-weight:700;font-size:14px;margin-bottom:14px" id="obra-form-title">Nova Obra</div>
+          <div class="form-row">
+            <div class="form-group">
+              <div class="form-label">Nome da Obra <span style="color:red">*</span></div>
+              <input class="form-input" id="go-nome" type="text" placeholder="Ex: MOTIVA / OBRA XPTO">
+            </div>
+            <div class="form-group">
+              <div class="form-label">Gestor Responsável <span style="color:red">*</span></div>
+              <input class="form-input" id="go-gestor" type="text" placeholder="Nome do gestor">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <div class="form-label">Prioridade <span style="color:red">*</span></div>
+              <select class="form-select" id="go-prioridade">
+                <option>PRIORIDADE 0</option>
+                <option>PRIORIDADE 1</option>
+                <option>PRIORIDADE 2</option>
+                <option>PRIORIDADE 3</option>
+                <option>PRIORIDADE 4</option>
+                <option>PRIORIDADE 5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Retenção (R$)</div>
+              <input class="form-input" id="go-retencao" type="number" step="0.01" placeholder="0,00">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <div class="form-label">Status</div>
+              <select class="form-select" id="go-status">
+                <option>Em Andamento</option>
+                <option>Pendente</option>
+                <option>Concluído</option>
+                <option>Atrasado</option>
+                <option>Congelado</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:10px">
+            <button class="btn btn-ghost" onclick="cancelObraForm()">Cancelar</button>
+            <button class="btn btn-primary" id="go-save-btn" onclick="saveObraGestao()">Salvar Obra</button>
+          </div>
+        </div>
+        <!-- LISTA DE OBRAS -->
+        <div id="obras-list-wrap"></div>
+      </div>
+    </div>
+
+    <!-- SETUP SHEETS -->
+    <div id="setup-overlay"
+      style="position:fixed;inset:0;background:rgba(15,20,40,.5);backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center">
+      <div
+        style="background:var(--white);border:1px solid var(--border);border-radius:20px;padding:40px;width:560px;max-width:95vw;box-shadow:var(--shadow-md)">
+        <div style="font-size:20px;font-weight:700;margin-bottom:6px">Conectar ao Google Sheets</div>
+        <div style="font-size:13px;color:var(--text3);margin-bottom:24px">O dashboard vai ler os dados em tempo real
+          da
+          sua planilha.</div>
+        <div
+          style="background:var(--blue-l);border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid var(--blue)">
+          <div
+            style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em">
+            Passo 1</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.7">Crie uma aba <code
+              style="background:var(--blue-m);padding:1px 6px;border-radius:4px;font-size:12px">Plano</code> com as
+            colunas: <span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text3)">#, Obra,
+              Gestor, Valor Retido, Prioridade, Tipo, Ação, Responsável, Apoio, Status, Data Prevista, Data
+              Real</span>
+          </div>
+        </div>
+        <div
+          style="background:var(--yellow-l);border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid var(--yellow)">
+          <div
+            style="font-size:11px;font-weight:700;color:var(--yellow);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em">
+            Passo 2</div>
+          <div style="font-size:13px;color:var(--text2)"><strong>Arquivo → Publicar na web</strong> → aba Plano →
+            Publicar
+          </div>
+        </div>
+        <div
+          style="background:var(--green-l);border-radius:12px;padding:16px;margin-bottom:20px;border-left:4px solid var(--green)">
+          <div
+            style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em">
+            Passo 3 — Cole o link</div>
+          <input id="sheets-url-input" class="form-input" type="text"
+            placeholder="https://docs.google.com/spreadsheets/d/...">
+          <div id="sheets-error" style="font-size:12px;color:var(--red);min-height:16px;margin-top:4px"></div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;align-items:center">
+          <div style="font-size:12px;color:var(--text3);margin-right:auto">Sem Sheets? Usa os dados locais.</div>
+          <button class="btn btn-ghost" onclick="hideSetup()">Usar dados locais</button>
+          <button id="btn-connect-sheets" class="btn btn-primary" onclick="connectSheets()">Conectar</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast"></div>
+  </div>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
