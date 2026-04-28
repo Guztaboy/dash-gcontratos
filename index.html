@@ -10,7 +10,7 @@
     rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -21,7 +21,7 @@
     <div id="login-card">
       <div class="login-logo-container">
         <!-- Reusing the logo logic but visually larger for login -->
-        <h2 style="color:var(--blue);margin-bottom:10px">GLOBAL SERVICE</h2>
+        <h2 style="color:var(--blue);margin-bottom:10px">GLOBAL SERVICE ENGENHARIA</h2>
       </div>
       <h1 class="login-title">Dashboard de Retenções</h1>
       <p class="login-subtitle">Acesse com sua conta Microsoft 365 da organização</p>
@@ -41,7 +41,7 @@
   <!-- APP CONTAINER -->
   <div id="app-container">
 
-    <!-- BARRA SUPERIOR (TOPBAR): Contém logo, navegação principal e perfil do usuário -->
+    <!-- BARRA SUPERIOR (TOPBAR): logo, navegação principal e perfil do usuário -->
     <header class="topbar">
       <div class="topbar-logo">
         <img
@@ -240,6 +240,15 @@
               <option value="">Todos responsáveis</option>
             </select>
             <div class="tb-spacer"></div>
+            <button class="btn-export" id="btn-export-excel" onclick="exportToExcel()" title="Exportar dados filtrados para Excel">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="12" y1="18" x2="12" y2="12"/>
+                <line x1="9" y1="15" x2="15" y2="15"/>
+              </svg>
+              Exportar Excel
+            </button>
           </div>
           <table>
             <thead>

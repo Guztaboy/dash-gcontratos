@@ -1,0 +1,13 @@
+{
+  "name": "dash-gcontratos",
+  "version": "1.0.0",
+  "description": "Dashboard de Retenções Contratuais",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve . -l 49747",
+    "start": "npx serve . -l 49747"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

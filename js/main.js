@@ -3,11 +3,7 @@
       const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ocm5yaHRkZ2RwZHNwbW9heWVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNDMxMTMsImV4cCI6MjA5MDYxOTExM30.tGwVG81PZZdSgyZeLPI1q3Kcrm39pLV7REPgzkqIHYQ".trim();
       const _supabase = supabase.createClient(SB_URL, SB_KEY);
 
-      const WHITELIST = [
-        'denise.maliniak@globalsrv.com.br',
-        'caroline.gomes@globalsrv.com.br',
-        'marcelo.pereira@globalsrv.com.br'
-      ];
+      // Controle de acesso gerenciado via RLS no Supabase (tabela profissionais)
 
       let actions = [];
       let obrasList = [];
@@ -20,22 +16,40 @@
       const PER_PAGE = 20;
       const fmt = v => v >= 1000000 ? 'R$ ' + (v / 1000000).toFixed(1) + 'M' : 'R$ ' + (v / 1000).toFixed(0) + 'k';
 
+      // ---- SEGURANÇA: Sanitizador XSS ----
+      // Escapa caracteres HTML especiais em qualquer string vinda do banco de dados
+      // antes de ser inserida via innerHTML, prevenindo ataques de Cross-Site Scripting (XSS).
+      function sanitizeText(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
 
 
       // ---- AUTH LOGIC ----
       async function signInWithMicrosoft() {
+        // Detecta a URL base para o redirect funcionar tanto localmente quanto em produção (GitHub Pages)
+        const redirectUrl = window.location.origin + window.location.pathname;
+        
         const { data, error } = await _supabase.auth.signInWithOAuth({
           provider: 'azure',
           options: {
             scopes: 'email profile',
-            redirectTo: window.location.origin + window.location.pathname
+            redirectTo: redirectUrl
           }
         });
         if (error) {
-          // Fallback to 'microsoft' provider if 'azure' fails (sometimes configured differently)
           await _supabase.auth.signInWithOAuth({
             provider: 'microsoft',
-            options: { scopes: 'email profile' }
+            options: { 
+              scopes: 'email profile',
+              redirectTo: redirectUrl
+            }
           });
         }
       }
@@ -54,7 +68,18 @@
 
           if (session && session.user) {
             const user = session.user;
-            userEmail = user.email;
+            const email = (user.email || '').toLowerCase().trim();
+
+            // SEGURANÇA: Validação de domínio corporativo
+            if (!email.endsWith('@globalsrv.com.br')) {
+              await _supabase.auth.signOut();
+              showToast('Acesso negado: Utilize apenas seu e-mail corporativo @globalsrv.com.br');
+              loginScreen.style.display = 'flex';
+              appContainer.style.display = 'none';
+              return;
+            }
+
+            userEmail = email;
 
             // Get metadata from Microsoft
             const fullName = user.user_metadata?.full_name || user.email;
@@ -79,10 +104,8 @@
 
             if (!profErr && prof) {
               isEditor = (prof.funcao || '').toLowerCase().trim() === 'editor';
-              console.log("Perfil carregado:", prof.funcao, "isEditor:", isEditor);
             } else {
               isEditor = false;
-              if (profErr) console.warn("Erro ao buscar profissional:", profErr);
             }
 
             document.getElementById('user-role').textContent = isEditor ? 'Editor' : 'Visualizador';
@@ -205,8 +228,8 @@
           const pNum = (o.prioridade || '').match(/\d+/)?.[0] || '1';
           const pri = `<span class="tag-p${pNum}">P${pNum}</span>`;
           return `<tr>
-      <td class="td-obra">${o.obra}</td>
-      <td style="color:var(--text2)">${o.gestor}</td>
+      <td class="td-obra">${sanitizeText(o.obra)}</td>
+      <td style="color:var(--text2)">${sanitizeText(o.gestor)}</td>
       <td>${pri}</td>
       <td style="text-align:center;color:var(--green);font-family:'JetBrains Mono',monospace">${o.conc}</td>
       <td style="text-align:center;color:var(--yellow);font-family:'JetBrains Mono',monospace">${o.and}</td>
@@ -216,7 +239,7 @@
       <td>${pb}</td>
       <td class="td-money">${fmtMoney(o.retencao)}</td>
       <td>${situacaoBadge(sit)}</td>
-      <td><button class="btn btn-ghost" style="padding:5px 12px;font-size:12px" onclick="goObra('${o.obra.replace(/'/g, "\\'")}')">Ver →</button></td>
+      <td><button class="btn btn-ghost" style="padding:5px 12px;font-size:12px" onclick="goObra('${sanitizeText(o.obra).replace(/'/g, "\\'")}')">Ver →</button></td>
     </tr>`;
         }).join('');
       }
@@ -291,11 +314,11 @@
           const editBtn = isEditor ? `<td style="white-space:nowrap"><button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="openEditModal(${idx})">Editar</button></td>` : '';
           return `<tr>
       <td class="td-mono">${a.num}</td>
-      <td class="td-obra" style="max-width:130px">${a.obra}</td>
-      <td><span class="tipo-badge">${a.tipo || ''}</span></td>
-      <td class="td-acao">${a.acao}</td>
-      <td style="color:var(--text2)">${a.responsavel || '—'}</td>
-      <td style="color:var(--text3)">${a.apoio || '—'}</td>
+      <td class="td-obra" style="max-width:130px">${sanitizeText(a.obra)}</td>
+      <td><span class="tipo-badge">${sanitizeText(a.tipo)}</span></td>
+      <td class="td-acao">${sanitizeText(a.acao)}</td>
+      <td style="color:var(--text2)">${sanitizeText(a.responsavel) || '—'}</td>
+      <td style="color:var(--text3)">${sanitizeText(a.apoio) || '—'}</td>
       <td>${statusBadge(a.status, a.data_prevista)}</td>
       <td class="td-mono">${fmtDate(a.data_prevista)}</td>
       <td class="td-mono">${fmtDate(a.data_real)}</td>
@@ -365,10 +388,10 @@
     </td>` : '';
           return `<tr>
       <td class="td-mono">${a.num}</td>
-      <td><span class="tipo-badge">${a.tipo || ''}</span></td>
-      <td class="td-acao">${a.acao}</td>
-      <td style="color:var(--text2)">${a.responsavel || '—'}</td>
-      <td style="color:var(--text3)">${a.apoio || '—'}</td>
+      <td><span class="tipo-badge">${sanitizeText(a.tipo)}</span></td>
+      <td class="td-acao">${sanitizeText(a.acao)}</td>
+      <td style="color:var(--text2)">${sanitizeText(a.responsavel) || '—'}</td>
+      <td style="color:var(--text3)">${sanitizeText(a.apoio) || '—'}</td>
       <td>${statusBadge(a.status)}</td>
       <td class="td-mono">${fmtDate(a.data_prevista)}</td>
       <td class="td-mono">${fmtDate(a.data_real)}</td>
@@ -391,8 +414,8 @@
           const pri = `<span class="tag-p${pNum}">P${pNum}</span>`;
           const pb = `<div style="display:flex;align-items:center;gap:8px"><div class="prog-wrap" style="width:60px"><div class="prog-fill ${progColor(pct)}" style="width:${Math.round(pct * 100)}%"></div></div><span class="td-mono">${Math.round(pct * 100)}%</span></div>`;
           return `<tr>
-      <td class="td-obra">${o.obra}</td>
-      <td style="color:var(--text2)">${o.gestor}</td>
+      <td class="td-obra">${sanitizeText(o.obra)}</td>
+      <td style="color:var(--text2)">${sanitizeText(o.gestor)}</td>
       <td>${pri}</td>
       <td class="td-money">${fmtMoney(o.retencao)}</td>
       <td style="text-align:center;font-family:'DM Mono',monospace">${o.total}</td>
@@ -510,7 +533,7 @@
           currentData.id = actions[editingIdx].id;
         }
 
-        console.log("Enviando para Supabase:", currentData);
+        // payload enviado ao Supabase
 
         // 1. Instant feedback (Optimistic Update)
         closeModal();
@@ -1050,6 +1073,140 @@
         await checkUserSession();
       });
       _supabase.auth.onAuthStateChange((event, session) => {
-        console.log("Auth event:", event);
+        // auth state change detectado
         checkUserSession();
       });
+
+      // ---- EXPORTAR EXCEL ----
+      function exportToExcel() {
+        if (!planoFiltered || planoFiltered.length === 0) {
+          showToast('Nenhum dado para exportar. Ajuste os filtros e tente novamente.');
+          return;
+        }
+
+        const btn = document.getElementById('btn-export-excel');
+        const originalContent = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Gerando...`;
+
+        try {
+          // ---- Metadados do filtro ativo ----
+          const obraFiltro   = document.getElementById('f-obra')?.value   || '';
+          const statusFiltro = document.getElementById('f-status')?.value || '';
+          const respFiltro   = document.getElementById('f-resp')?.value   || '';
+          const busca        = document.querySelector('#page-plano .search-inp')?.value || '';
+
+          // ---- Cabeçalho da planilha ----
+          const headers = [
+            '#',
+            'Obra',
+            'Gestor',
+            'Prioridade',
+            'Tipo',
+            'Ação / Pendência',
+            'Responsável',
+            'E-mail Responsável',
+            'Apoio',
+            'Status',
+            'Valor Retido (R$)',
+            'Data Prevista',
+            'Data Encerramento',
+            'Observações'
+          ];
+
+          // ---- Linhas de dados ----
+          const rows = planoFiltered.map(a => [
+            a.num             || '',
+            a.obra            || '',
+            a.gestor          || '',
+            a.prioridade      || '',
+            a.tipo            || '',
+            a.acao            || '',
+            a.responsavel     || '',
+            a.email_responsavel || '',
+            a.apoio           || '',
+            a.status          || '',
+            a.valor_retido    != null ? Number(a.valor_retido) : 0,
+            a.data_prevista   ? fmtDate(a.data_prevista) : '',
+            a.data_real       ? fmtDate(a.data_real)     : '',
+            a.observacoes     || ''
+          ]);
+
+          // ---- Monta worksheet ----
+          const wb = XLSX.utils.book_new();
+          const wsData = [headers, ...rows];
+          const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+          // ---- Larguras de coluna ----
+          ws['!cols'] = [
+            { wch: 6  },  // #
+            { wch: 30 },  // Obra
+            { wch: 20 },  // Gestor
+            { wch: 14 },  // Prioridade
+            { wch: 16 },  // Tipo
+            { wch: 55 },  // Ação
+            { wch: 22 },  // Responsável
+            { wch: 32 },  // Email
+            { wch: 22 },  // Apoio
+            { wch: 16 },  // Status
+            { wch: 18 },  // Valor Retido
+            { wch: 14 },  // Dt Prevista
+            { wch: 16 },  // Dt Encerramento
+            { wch: 40 },  // Observações
+          ];
+
+          // ---- Estilo do cabeçalho (negrito) via cell styles ----
+          const range = XLSX.utils.decode_range(ws['!ref']);
+          for (let C = range.s.c; C <= range.e.c; C++) {
+            const cellAddr = XLSX.utils.encode_cell({ r: 0, c: C });
+            if (!ws[cellAddr]) continue;
+            ws[cellAddr].s = {
+              font: { bold: true, color: { rgb: 'FFFFFF' } },
+              fill: { fgColor: { rgb: '1D4ED8' } },
+              alignment: { horizontal: 'center', vertical: 'center', wrapText: true }
+            };
+          }
+
+          // ---- Aba de metadados / resumo dos filtros ----
+          const today = new Date();
+          const dataExport = today.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+          const horaExport = today.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+          const metaData = [
+            ['GLOBAL SERVICE — Retenções Contratuais'],
+            ['Plano de Ação Consolidado'],
+            [''],
+            ['Gerado em:', `${dataExport} às ${horaExport}`],
+            ['Total de registros exportados:', planoFiltered.length],
+            [''],
+            ['Filtros aplicados:', ''],
+            ['Obra:', obraFiltro   || 'Todas'],
+            ['Status:', statusFiltro || 'Todos'],
+            ['Responsável:', respFiltro   || 'Todos'],
+            ['Busca textual:', busca        || '—'],
+          ];
+          const wsMeta = XLSX.utils.aoa_to_sheet(metaData);
+          wsMeta['!cols'] = [{ wch: 32 }, { wch: 40 }];
+
+          // ---- Adiciona abas ao workbook ----
+          XLSX.utils.book_append_sheet(wb, ws, 'Plano de Ação');
+          XLSX.utils.book_append_sheet(wb, wsMeta, 'Informações');
+
+          // ---- Nome do arquivo dinâmico ----
+          const dateStr = today.toISOString().slice(0, 10); // YYYY-MM-DD
+          const obraSuffix = obraFiltro ? `_${obraFiltro.replace(/[^a-zA-Z0-9]/g, '-').slice(0, 20)}` : '';
+          const statusSuffix = statusFiltro ? `_${statusFiltro.replace(/\s/g, '-')}` : '';
+          const filename = `PlanoAcao_GlobalService${obraSuffix}${statusSuffix}_${dateStr}.xlsx`;
+
+          // ---- Dispara o download ----
+          XLSX.writeFile(wb, filename);
+          showToast(`✅ Excel exportado com ${planoFiltered.length} registros!`);
+
+        } catch (err) {
+          console.error('Erro ao exportar Excel:', err);
+          showToast('❌ Erro ao gerar o Excel: ' + err.message);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalContent;
+        }
+      }
