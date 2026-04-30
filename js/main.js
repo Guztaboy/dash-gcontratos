@@ -181,8 +181,32 @@
       }
       function getObrasStats() {
         const obras = {};
+        
+        // 1. Inicializa com os dados da tabela 'obras' (Fonte de verdade para metadados e retenção)
+        obrasList.forEach(ob => {
+          const nome = ob.nome || ob.name;
+          if (!nome) return;
+          obras[nome] = { 
+            obra: nome, 
+            gestor: ob.gestor, 
+            prioridade: ob.prioridade, 
+            retencao: ob.valor_retido || 0, 
+            conc: 0, and: 0, pend: 0, cong: 0, ag: 0, total: 0 
+          };
+        });
+
+        // 2. Agrega os contadores de status vindos da tabela 'acoes'
         actions.forEach(a => {
-          if (!obras[a.obra]) obras[a.obra] = { obra: a.obra, gestor: a.gestor, prioridade: a.prioridade, retencao: a.valor_retido, conc: 0, and: 0, pend: 0, cong: 0, ag: 0, total: 0 };
+          if (!obras[a.obra]) {
+            // Caso a obra exista em 'acoes' mas não em 'obras' (fallback de segurança)
+            obras[a.obra] = { 
+              obra: a.obra, 
+              gestor: a.gestor, 
+              prioridade: a.prioridade, 
+              retencao: a.valor_retido || 0, 
+              conc: 0, and: 0, pend: 0, cong: 0, ag: 0, total: 0 
+            };
+          }
           const o = obras[a.obra];
           const sn = normStatus(a.status);
           if (sn === 'concluido') o.conc++;
@@ -342,14 +366,18 @@
       // ---- RENDER OBRA ----
       function renderObra(obra) {
         const oActions = actions.filter(a => a.obra === obra);
+        const obraMeta = obrasList.find(o => (o.nome || o.name) === obra);
+
         const conc = oActions.filter(a => a.status === 'Concluído').length;
         const and = oActions.filter(a => a.status === 'Em Andamento').length;
         const pend = oActions.filter(a => a.status === 'Pendente' || a.status === 'PENDENTE').length;
         const cong = oActions.filter(a => (a.status || '').toUpperCase() === 'CONGELADO').length;
         const pct = oActions.length ? conc / oActions.length : 0;
-        const retencao = oActions[0]?.valor_retido || 0;
-        const gestor = oActions[0]?.gestor || '—';
-        const pri = oActions[0]?.prioridade || '—';
+
+        // Prioriza dados da obrasList (Fonte de Verdade)
+        const retencao = obraMeta ? (obraMeta.valor_retido || 0) : (oActions[0]?.valor_retido || 0);
+        const gestor = obraMeta ? (obraMeta.gestor || '—') : (oActions[0]?.gestor || '—');
+        const pri = obraMeta ? (obraMeta.prioridade || '—') : (oActions[0]?.prioridade || '—');
 
         document.getElementById('obra-header-content').innerHTML = `
     <div class="page-header"><div class="page-title">${obra}</div></div>
@@ -637,10 +665,13 @@
       function suggestObraInfo() {
         const obra = document.getElementById('f-obra-modal').value;
         if (!obra) return;
-        const match = actions.find(a => a.obra === obra);
+        
+        // Busca primeiro na obrasList (Fonte de verdade)
+        const match = obrasList.find(o => (o.nome || o.name) === obra) || actions.find(a => a.obra === obra);
+        
         if (match) {
           document.getElementById('f-gestor').value = match.gestor || '';
-          document.getElementById('f-valor-retido').value = match.valor_retido || 0;
+          document.getElementById('f-valor-retido').value = (match.valor_retido != null ? match.valor_retido : (match.retencao || 0));
           document.getElementById('f-prioridade').value = match.prioridade || 'PRIORIDADE 1';
         }
       }
